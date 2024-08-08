@@ -1,0 +1,122 @@
+Simplifying FUBAR data
+Getting consensus sequences
+new files are data/mexico/cell2_bc1009.aln.consensus.unaligned and data/mexico/cell2_bc1009.aln.consensus
+new files are data/mexico/cell2_bc1010.aln.consensus.unaligned and data/mexico/cell2_bc1010.aln.consensus
+new files are data/mexico/cell2_bc1011.aln.consensus.unaligned and data/mexico/cell2_bc1011.aln.consensus
+new files are data/mexico/cell2_bc1012.aln.consensus.unaligned and data/mexico/cell2_bc1012.aln.consensus
+new files are data/mexico/cell2_bc1015.aln.consensus.unaligned and data/mexico/cell2_bc1015.aln.consensus
+new files are data/mexico/cell2_bc1016.aln.consensus.unaligned and data/mexico/cell2_bc1016.aln.consensus
+new files are data/mexico/cell2_bc1017.aln.consensus.unaligned and data/mexico/cell2_bc1017.aln.consensus
+new files are data/mexico/cell2_bc1018.aln.consensus.unaligned and data/mexico/cell2_bc1018.aln.consensus
+new files are data/mexico/cell2_bc1019.aln.consensus.unaligned and data/mexico/cell2_bc1019.aln.consensus
+new files are data/mexico/cell2_bc1020.aln.consensus.unaligned and data/mexico/cell2_bc1020.aln.consensus
+new files are data/mexico/cell2_bc1021.aln.consensus.unaligned and data/mexico/cell2_bc1021.aln.consensus
+new files are data/mexico/cell2_bc1022.aln.consensus.unaligned and data/mexico/cell2_bc1022.aln.consensus
+new files are data/mexico/cell3_bc1001.aln.consensus.unaligned and data/mexico/cell3_bc1001.aln.consensus
+new files are data/mexico/cell3_bc1003.aln.consensus.unaligned and data/mexico/cell3_bc1003.aln.consensus
+new files are data/mexico/cell3_bc1008.aln.consensus.unaligned and data/mexico/cell3_bc1008.aln.consensus
+new files are data/mexico/cell3_bc1009.aln.consensus.unaligned and data/mexico/cell3_bc1009.aln.consensus
+new files are data/mexico/cell3_bc1010.aln.consensus.unaligned and data/mexico/cell3_bc1010.aln.consensus
+new files are data/mexico/cell3_bc1011.aln.consensus.unaligned and data/mexico/cell3_bc1011.aln.consensus
+new files are data/mexico/cell3_bc1015.aln.consensus.unaligned and data/mexico/cell3_bc1015.aln.consensus
+new files are data/mexico/cell3_bc1016.aln.consensus.unaligned and data/mexico/cell3_bc1016.aln.consensus
+new files are data/mexico/cell3_bc1017.aln.consensus.unaligned and data/mexico/cell3_bc1017.aln.consensus
+Translating consensus sequences
+GCC/4.8.4(13):ERROR:150: Module 'GCC/4.8.4' conflicts with the currently loaded module(s) 'GCC/5.4.0-2.26'
+GCC/4.8.4(13):ERROR:102: Tcl command execution failed: conflict GCC
+
+OpenMPI/1.8.4-GCC-4.8.4(11):ERROR:150: Module 'OpenMPI/1.8.4-GCC-4.8.4' conflicts with the currently loaded module(s) 'OpenMPI/1.10.3-GCC-5.4.0-2.26'
+OpenMPI/1.8.4-GCC-4.8.4(11):ERROR:102: Tcl command execution failed: conflict OpenMPI
+
+OpenBLAS/0.2.13-GCC-4.8.4-LAPACK-3.5.0(11):ERROR:150: Module 'OpenBLAS/0.2.13-GCC-4.8.4-LAPACK-3.5.0' conflicts with the currently loaded module(s) 'OpenBLAS/0.2.18-GCC-5.4.0-2.26-LAPACK-3.6.1'
+OpenBLAS/0.2.13-GCC-4.8.4-LAPACK-3.5.0(11):ERROR:102: Tcl command execution failed: conflict OpenBLAS
+
+FFTW/3.3.4-gompi-1.7.20(13):ERROR:150: Module 'FFTW/3.3.4-gompi-1.7.20' conflicts with the currently loaded module(s) 'FFTW/3.3.4-gompi-2016b'
+FFTW/3.3.4-gompi-1.7.20(13):ERROR:102: Tcl command execution failed: conflict FFTW
+
+ScaLAPACK/2.0.2-gompi-1.7.20-OpenBLAS-0.2.13-LAPACK-3.5.0(13):ERROR:150: Module 'ScaLAPACK/2.0.2-gompi-1.7.20-OpenBLAS-0.2.13-LAPACK-3.5.0' conflicts with the currently loaded module(s) 'ScaLAPACK/2.0.2-gompi-2016b-OpenBLAS-0.2.18-LAPACK-3.6.1'
+ScaLAPACK/2.0.2-gompi-1.7.20-OpenBLAS-0.2.13-LAPACK-3.5.0(13):ERROR:102: Tcl command execution failed: conflict ScaLAPACK
+
+Aligning consensus protein sequences to HXB2
+nthread = 0
+nthreadpair = 0
+nthreadtb = 0
+ppenalty_ex = 0
+stacksize: -1 kb
+rescale = 1
+Gap Penalty = -1.53, +0.00, +0.00
+
+
+
+Making a distance matrix ..
+    1 / 22
+done.
+
+Constructing a UPGMA tree (efffree=0) ... 
+    0 / 22   10 / 22   20 / 22
+done.
+
+Progressive alignment 1/2... 
+STEP     1 / 21  fSTEP     2 / 21  fSTEP     3 / 21  fSTEP     4 / 21  fSTEP     5 / 21  fSTEP     6 / 21  fSTEP     7 / 21  fSTEP     8 / 21  fSTEP     9 / 21  fSTEP    10 / 21  fSTEP    11 / 21  fSTEP    12 / 21  fSTEP    13 / 21  fSTEP    14 / 21  fSTEP    15 / 21  fSTEP    16 / 21  f
+Reallocating..done. *alloclen = 2795
+STEP    17 / 21  fSTEP    18 / 21  fSTEP    19 / 21  fSTEP    20 / 21  fSTEP    21 / 21  f
+done.
+
+Making a distance matrix from msa.. 
+    0 / 22
+done.
+
+Constructing a UPGMA tree (efffree=1) ... 
+    0 / 22   10 / 22   20 / 22
+done.
+
+Progressive alignment 2/2... 
+STEP     1 / 21  fSTEP     2 / 21  fSTEP     3 / 21  fSTEP     4 / 21  fSTEP     5 / 21  fSTEP     6 / 21  fSTEP     7 / 21  fSTEP     8 / 21  fSTEP     9 / 21  fSTEP    10 / 21  fSTEP    11 / 21  fSTEP    12 / 21  fSTEP    13 / 21  fSTEP    14 / 21  fSTEP    15 / 21  f
+Reallocating..done. *alloclen = 2799
+STEP    16 / 21  fSTEP    17 / 21  fSTEP    18 / 21  fSTEP    19 / 21  fSTEP    20 / 21  fSTEP    21 / 21  f
+done.
+
+disttbfast (aa) Version 7.467
+alg=A, model=BLOSUM62, 1.53, -0.00, -0.00, noshift, amax=0.0
+0 thread(s)
+
+
+Strategy:
+ FFT-NS-2 (Fast but rough)
+ Progressive method (guide trees were built 2 times.)
+
+If unsure which option to use, try 'mafft --auto input > output'.
+For more information, see 'mafft --help', 'mafft --man' and the mafft page.
+
+The default gap scoring scheme has been changed in version 7.110 (2013 Oct).
+It tends to insert more gaps into gap-rich regions than previous versions.
+To disable this change, add the --leavegappyregion option.
+
+Getting codon position mappings from the alignment
+Getting annotations for consensus sequences
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+✔ ggplot2 3.4.3     ✔ purrr   0.3.4
+✔ tibble  3.2.1     ✔ dplyr   1.1.2
+✔ tidyr   1.1.2     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+New names:
+• `Mutations associated with resistance to neutralization` -> `Mutations
+  associated with resistance to neutralization...62`
+• `Mutations associated with sensitivity to neutralization` -> `Mutations
+  associated with sensitivity to neutralization...63`
+• `Mutations associated with resistance to neutralization` -> `Mutations
+  associated with resistance to neutralization...64`
+• `Mutations associated with sensitivity to neutralization` -> `Mutations
+  associated with sensitivity to neutralization...65`
+• `Mutations associated with resistance to neutralization` -> `Mutations
+  associated with resistance to neutralization...66`
+• `Mutations associated with sensitivity to neutralization` -> `Mutations
+  associated with sensitivity to neutralization...67`
+• `Mutations associated with resistance to neutralization` -> `Mutations
+  associated with resistance to neutralization...68`
+• `Mutations associated with sensitivity to neutralization` -> `Mutations
+  associated with sensitivity to neutralization...69`
+All done!

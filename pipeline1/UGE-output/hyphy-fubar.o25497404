@@ -1,0 +1,1451 @@
+
+WARNING: This version of hyphy only runs on avx2-supported nodes.
+         You must use "-l avx2" in your "qrsh" or "qsub" command.
+         If you don't, this program will core dump and die.
+
+
+WARNING: For Linux 64, Open MPI is built with CUDA awareness but this support is disabled by default.
+         To enable it, please set the environment variable OMPI_MCA_opal_cuda_support=true before
+         launching your MPI processes. Equivalently, you can set the MCA parameter in the command line:
+         mpiexec --mca opal_cuda_support 1 ...
+
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 25 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = IdLqcadZ] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = bQDuOSeb] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = IwO_IXYj] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 3 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = OSOfIcnx] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = QDxbsQVm] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = _pfMhcCY] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 2 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = COLKA_XB] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = tCoEeGzf] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = SXJOKz_L] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 298 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = bHJkYRoe] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = GwwcuyPg] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = roxRABhz] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 46 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = q_OHDIAf] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = wqBLgQhH] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = sQdTF_cD] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 181 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = yhQjxCmM] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = zXYBKivb] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = IXVfZYcc] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 367 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = RiqHeIgf] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = sbmNLJJH] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = eGzxbKQW] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 32 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = dZkRXxmW] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = GIwpyYzI] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = ZviMZWaR] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 11 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = BPkjwoov] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = juvoKYpx] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = RxoGQUKW] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 1 duplicate sequence. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = vqVfzFHu] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = cdOlDqJH] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = RMRHrEVo] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 4 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = kERIMQCk] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = pEPosgIG] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = vQrXQLqK] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 18 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = wlaCsSxc] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = rmpmZeFy] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = RA_zOYLh] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 11 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = piOFgoDz] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = pOzObSha] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = _wrXYCcr] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 243 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = haYyTOHi] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = Usmojmuw] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = UJHsRpsq] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = NH_KxSbQ] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = RiwvdJXq] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = lBuqvcYy] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 8 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = gWAWSGty] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = AhLRJCCQ] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = RVhvluqN] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 30 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = psLCHMay] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = XybHljFx] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = qjZZIVyo] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 6 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = SZfQIqNK] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = vX_WzLAG] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = PgtGv_EY] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 7 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = YJZAaoFO] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = uBwnpDjl] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = XksxSlMi] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 1 duplicate sequence. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = ikTCrTTn] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = ZRCqDUcK] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = iYhLkvlk] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 18 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.treefile
+Error:
+'/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.treefile' could not be opened for reading by fscanf. Path stack:
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/
+	/sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/ in call to assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+
+Function call stack
+1 :  [namespace = HPwHlPmB] assert(0, utility.GetEnvVariable("LAST_FILE_IO_EXCEPTION"));
+-------
+2 :  [namespace = jZdnBELN] result=trees.ExtractTreeInfo(trees.GetTreeString(look_for_newick_tree));
+-------
+3 :  [namespace = QpkMhjSY] tree_info=trees.LoadAnnotatedTopologyAndMap(TRUE,mapping);
+-------
+4 :  [namespace = fubar] partitions_and_trees=trees.LoadAnnotatedTreeTopology.match_partitions(codon_data_info[utility.getGlobalValue("terms.data.partitions")],name_mapping);
+-------
+5 :  [namespace = fubar] load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});
+-------
+6 :  namespace 
+
+Step 0.LoadFunctionLibrary("modules/shared-load-file.bf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 1.LoadFunctionLibrary("modules/grid_compute.ibf", /sysapps/cluster/software/Anaconda3/2022.05/envs/hyphy-2.5.47/share/hyphy/TemplateBatchFiles/SelectionAnalyses/);
+
+Step 2.load_file({utility.getGlobalValue("terms.prefix"):"fubar",utility.getGlobalValue("terms.settings"):{utility.getGlobalValue("terms.settings.branch_selector"):"selection.io.SelectAllBranches"}});;
+-------
+
+Check errors.log for execution error details.

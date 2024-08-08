@@ -1,0 +1,2480 @@
+
+WARNING: This version of hyphy only runs on avx2-supported nodes.
+         You must use "-l avx2" in your "qrsh" or "qsub" command.
+         If you don't, this program will core dump and die.
+
+
+WARNING: For Linux 64, Open MPI is built with CUDA awareness but this support is disabled by default.
+         To enable it, please set the environment variable OMPI_MCA_opal_cuda_support=true before
+         launching your MPI processes. Equivalently, you can set the MCA parameter in the command line:
+         mpiexec --mca opal_cuda_support 1 ...
+
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 25 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.aln.treefile
+
+>Loaded a multiple sequence alignment with **414** sequences, **856** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1009.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 244 zero-length internal branches: `Node104, Node109, Node110, Node113, Node116, Node117, Node118, Node12, Node121, Node123, Node124, Node125, Node13, Node131, Node135, Node14, Node146, Node147, Node15, Node157, Node158, Node159, Node16, Node160, Node162, Node163, Node164, Node167, Node17, Node176, Node180, Node182, Node19, Node193, Node195, Node196, Node197, Node199, Node20, Node203, Node204, Node209, Node21, Node214, Node22, Node223, Node225, Node226, Node230, Node238, Node24, Node241, Node25, Node250, Node26, Node260, Node261, Node268, Node272, Node273, Node274, Node276, Node278, Node28, Node280, Node282, Node283, Node285, Node29, Node294, Node295, Node296, Node297, Node30, Node302, Node305, Node306, Node307, Node309, Node310, Node311, Node312, Node313, Node316, Node317, Node318, Node322, Node326, Node328, Node335, Node338, Node345, Node346, Node349, Node350, Node361, Node365, Node369, Node371, Node372, Node374, Node375, Node376, Node377, Node379, Node38, Node382, Node384, Node387, Node393, Node400, Node401, Node403, Node404, Node405, Node407, Node408, Node411, Node416, Node417, Node418, Node42, Node436, Node44, Node440, Node443, Node453, Node454, Node455, Node456, Node457, Node458, Node459, Node461, Node462, Node471, Node472, Node474, Node477, Node485, Node490, Node498, Node5, Node500, Node511, Node517, Node522, Node523, Node525, Node526, Node527, Node528, Node531, Node533, Node546, Node552, Node553, Node554, Node557, Node558, Node559, Node560, Node561, Node564, Node565, Node566, Node573, Node574, Node582, Node587, Node59, Node598, Node599, Node6, Node60, Node600, Node603, Node605, Node607, Node612, Node620, Node621, Node623, Node624, Node625, Node626, Node634, Node636, Node64, Node645, Node648, Node656, Node657, Node660, Node669, Node673, Node676, Node677, Node678, Node679, Node682, Node683, Node686, Node687, Node695, Node7, Node702, Node708, Node714, Node719, Node72, Node722, Node733, Node734, Node735, Node737, Node739, Node758, Node759, Node761, Node762, Node764, Node769, Node77, Node770, Node773, Node782, Node785, Node786, Node792, Node793, Node795, Node796, Node798, Node8, Node80, Node802, Node803, Node806, Node816, Node822, Node86, Node9, Node93`
+* Log(L) = -9751.20, AIC-c = 21169.70 (833 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.282
+* Tree length (expected substitutions/site) for partition 1 :    0.282
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|      189       |       1        |       16.677   |       49.810   |       Pos. posterior = 0.9907       |
+|      190       |       1        |        1.799   |       42.219   |       Pos. posterior = 0.9974       |
+|      191       |       1        |        0.701   |       18.681   |       Pos. posterior = 0.9983       |
+|      192       |       1        |        1.433   |       23.930   |       Pos. posterior = 0.9881       |
+|      193       |       1        |        0.870   |       13.371   |       Pos. posterior = 0.9867       |
+|      195       |       1        |        0.751   |       10.196   |       Pos. posterior = 0.9863       |
+|      302       |       1        |        0.705   |        5.694   |       Pos. posterior = 0.9457       |
+|      400       |       1        |        1.372   |       13.849   |       Pos. posterior = 0.9851       |
+|      406       |       1        |       25.804   |       49.963   |       Pos. posterior = 0.9558       |
+|      415       |       1        |        0.782   |        5.390   |       Pos. posterior = 0.9310       |
+|      422       |       1        |        0.741   |        4.866   |       Pos. posterior = 0.9269       |
+|      483       |       1        |        0.760   |        6.436   |       Pos. posterior = 0.9598       |
+|      501       |       1        |        0.621   |        5.549   |       Pos. posterior = 0.9557       |
+|      705       |       1        |        0.703   |        5.806   |       Pos. posterior = 0.9475       |
+|      732       |       1        |        0.724   |        4.365   |       Pos. posterior = 0.9188       |
+----
+## FUBAR inferred 15 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.53 are expected to be false positives (95% confidence interval of 0-2 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 3 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.aln.treefile
+
+>Loaded a multiple sequence alignment with **91** sequences, **867** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1010.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 23 zero-length internal branches: `Node103, Node134, Node135, Node15, Node156, Node157, Node159, Node170, Node171, Node174, Node175, Node2, Node27, Node3, Node31, Node40, Node41, Node50, Node62, Node81, Node86, Node87, Node9`
+* Log(L) = -8544.85, AIC-c = 17463.99 (187 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.253
+* Tree length (expected substitutions/site) for partition 1 :    0.253
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  0.857
+	* non-synonymous rate =  1.000
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       29       |       1        |        0.927   |       20.996   |       Pos. posterior = 0.9949       |
+|       77       |       1        |        0.885   |       12.117   |       Pos. posterior = 0.9854       |
+|      142       |       1        |        1.062   |       32.360   |       Pos. posterior = 0.9986       |
+|      143       |       1        |        0.885   |       17.607   |       Pos. posterior = 0.9933       |
+|      144       |       1        |        1.028   |       34.607   |       Pos. posterior = 0.9989       |
+|      146       |       1        |        0.987   |       20.874   |       Pos. posterior = 0.9929       |
+|      147       |       1        |        1.042   |       40.649   |       Pos. posterior = 0.9995       |
+|      148       |       1        |        0.652   |        8.651   |       Pos. posterior = 0.9885       |
+|      149       |       1        |        0.700   |        7.804   |       Pos. posterior = 0.9753       |
+|      152       |       1        |        0.797   |        9.518   |       Pos. posterior = 0.9833       |
+|      201       |       1        |        4.481   |       33.463   |       Pos. posterior = 0.9699       |
+|      240       |       1        |        1.053   |       15.105   |       Pos. posterior = 0.9854       |
+|      275       |       1        |        0.601   |        4.960   |       Pos. posterior = 0.9273       |
+|      295       |       1        |        0.803   |        9.708   |       Pos. posterior = 0.9836       |
+|      311       |       1        |        0.891   |       29.658   |       Pos. posterior = 0.9992       |
+|      336       |       1        |        0.780   |       33.282   |       Pos. posterior = 0.9999       |
+|      344       |       1        |        0.926   |       16.450   |       Pos. posterior = 0.9913       |
+|      347       |       1        |        1.084   |       14.999   |       Pos. posterior = 0.9836       |
+|      351       |       1        |        0.964   |       23.187   |       Pos. posterior = 0.9954       |
+|      354       |       1        |        0.718   |        4.579   |       Pos. posterior = 0.9039       |
+|      359       |       1        |        1.377   |       44.887   |       Pos. posterior = 0.9988       |
+|      401       |       1        |        0.614   |        7.428   |       Pos. posterior = 0.9799       |
+|      405       |       1        |        0.630   |       16.089   |       Pos. posterior = 0.9990       |
+|      418       |       1        |        1.379   |       10.633   |       Pos. posterior = 0.9007       |
+|      467       |       1        |        0.787   |        6.050   |       Pos. posterior = 0.9271       |
+|      469       |       1        |        0.922   |       30.314   |       Pos. posterior = 0.9991       |
+|      470       |       1        |        0.878   |       24.154   |       Pos. posterior = 0.9974       |
+|      472       |       1        |        0.797   |        9.653   |       Pos. posterior = 0.9838       |
+|      501       |       1        |        0.879   |       28.045   |       Pos. posterior = 0.9989       |
+|      513       |       1        |        0.612   |        7.820   |       Pos. posterior = 0.9824       |
+|      651       |       1        |        4.109   |       21.814   |       Pos. posterior = 0.9309       |
+|      652       |       1        |       13.040   |       49.996   |       Pos. posterior = 0.9850       |
+|      699       |       1        |        1.220   |        6.648   |       Pos. posterior = 0.9317       |
+|      777       |       1        |        0.748   |        5.183   |       Pos. posterior = 0.9148       |
+|      822       |       1        |        0.689   |        6.717   |       Pos. posterior = 0.9677       |
+|      835       |       1        |        0.599   |        4.475   |       Pos. posterior = 0.9169       |
+|      838       |       1        |        0.974   |       11.562   |       Pos. posterior = 0.9803       |
+|      848       |       1        |        5.984   |       29.838   |       Pos. posterior = 0.9541       |
+----
+## FUBAR inferred 38 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  1.00 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 2 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.aln.treefile
+
+>Loaded a multiple sequence alignment with **25** sequences, **857** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1011.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 5 zero-length internal branches: `Node13, Node3, Node42, Node43, Node6`
+* Log(L) = -4968.32, AIC-c = 10046.73 (55 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.075
+* Tree length (expected substitutions/site) for partition 1 :    0.075
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  0.857
+	* non-synonymous rate =  1.000
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|      131       |       1        |        1.744   |       19.958   |       Pos. posterior = 0.9614       |
+|      147       |       1        |        2.772   |       28.334   |       Pos. posterior = 0.9583       |
+|      148       |       1        |        1.950   |       14.411   |       Pos. posterior = 0.9055       |
+|      171       |       1        |        1.858   |       25.496   |       Pos. posterior = 0.9730       |
+|      172       |       1        |        1.756   |       26.737   |       Pos. posterior = 0.9772       |
+|      198       |       1        |        2.260   |       48.868   |       Pos. posterior = 0.9915       |
+|      252       |       1        |        1.461   |       40.646   |       Pos. posterior = 0.9946       |
+|      298       |       1        |        1.893   |       23.977   |       Pos. posterior = 0.9710       |
+|      350       |       1        |        1.107   |       43.842   |       Pos. posterior = 0.9987       |
+|      366       |       1        |        1.161   |       25.355   |       Pos. posterior = 0.9892       |
+|      402       |       1        |        2.558   |       23.182   |       Pos. posterior = 0.9515       |
+|      403       |       1        |        2.288   |       23.285   |       Pos. posterior = 0.9586       |
+|      405       |       1        |        1.729   |       19.678   |       Pos. posterior = 0.9612       |
+|      409       |       1        |        2.564   |       28.978   |       Pos. posterior = 0.9638       |
+|      411       |       1        |        1.741   |       19.638   |       Pos. posterior = 0.9607       |
+|      413       |       1        |        2.647   |       28.623   |       Pos. posterior = 0.9615       |
+|      462       |       1        |        1.926   |       26.440   |       Pos. posterior = 0.9740       |
+|      464       |       1        |        1.643   |       15.505   |       Pos. posterior = 0.9507       |
+|      465       |       1        |        1.980   |       31.380   |       Pos. posterior = 0.9799       |
+|      466       |       1        |        1.817   |       19.571   |       Pos. posterior = 0.9583       |
+|      759       |       1        |        1.189   |       30.315   |       Pos. posterior = 0.9923       |
+----
+## FUBAR inferred 21 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.67 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 298 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.aln.treefile
+
+>Loaded a multiple sequence alignment with **546** sequences, **877** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1012.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 498 zero-length internal branches: `Node10, Node1000, Node1006, Node1007, Node1008, Node1009, Node1010, Node1011, Node1012, Node1016, Node1019, Node1022, Node1023, Node1026, Node1029, Node1032, Node1033, Node1036, Node1039, Node1042, Node1043, Node1047, Node1051, Node1054, Node1055, Node1059, Node1062, Node1063, Node1069, Node1070, Node1074, Node1075, Node1079, Node1084, Node1086, Node11, Node12, Node13, Node130, Node131, Node133, Node134, Node137, Node14, Node140, Node141, Node146, Node147, Node15, Node150, Node153, Node155, Node158, Node16, Node161, Node162, Node165, Node168, Node169, Node17, Node172, Node176, Node179, Node18, Node180, Node182, Node183, Node184, Node185, Node186, Node187, Node188, Node19, Node190, Node197, Node2, Node20, Node202, Node205, Node209, Node21, Node210, Node211, Node212, Node213, Node214, Node215, Node216, Node217, Node218, Node219, Node22, Node220, Node221, Node222, Node223, Node224, Node225, Node226, Node23, Node24, Node245, Node25, Node255, Node258, Node26, Node262, Node264, Node265, Node27, Node271, Node276, Node277, Node278, Node28, Node286, Node287, Node29, Node290, Node294, Node297, Node298, Node3, Node30, Node303, Node306, Node31, Node313, Node314, Node316, Node319, Node32, Node323, Node326, Node328, Node33, Node335, Node336, Node34, Node340, Node341, Node344, Node349, Node35, Node350, Node353, Node355, Node36, Node360, Node361, Node364, Node365, Node368, Node37, Node373, Node374, Node38, Node382, Node383, Node386, Node39, Node391, Node393, Node394, Node399, Node4, Node40, Node406, Node407, Node410, Node413, Node414, Node418, Node42, Node420, Node421, Node422, Node423, Node426, Node427, Node428, Node429, Node43, Node430, Node431, Node432, Node433, Node44, Node441, Node447, Node448, Node45, Node452, Node453, Node454, Node46, Node460, Node463, Node464, Node47, Node470, Node475, Node476, Node48, Node482, Node483, Node485, Node49, Node492, Node494, Node497, Node498, Node5, Node50, Node502, Node504, Node509, Node51, Node510, Node515, Node52, Node520, Node521, Node526, Node527, Node53, Node530, Node535, Node54, Node540, Node542, Node545, Node546, Node55, Node550, Node553, Node554, Node559, Node56, Node560, Node565, Node568, Node569, Node57, Node570, Node571, Node572, Node573, Node574, Node575, Node576, Node577, Node578, Node579, Node58, Node580, Node581, Node582, Node583, Node584, Node585, Node586, Node587, Node588, Node589, Node59, Node590, Node591, Node592, Node593, Node594, Node595, Node596, Node597, Node598, Node599, Node6, Node60, Node600, Node601, Node602, Node603, Node604, Node605, Node606, Node607, Node608, Node609, Node61, Node610, Node611, Node612, Node613, Node614, Node615, Node616, Node617, Node618, Node619, Node62, Node620, Node621, Node622, Node623, Node624, Node625, Node626, Node627, Node628, Node629, Node63, Node630, Node631, Node632, Node633, Node634, Node635, Node636, Node637, Node638, Node639, Node64, Node640, Node641, Node642, Node643, Node644, Node645, Node646, Node647, Node648, Node649, Node65, Node650, Node651, Node652, Node653, Node654, Node655, Node656, Node657, Node658, Node659, Node66, Node660, Node661, Node662, Node663, Node664, Node665, Node666, Node667, Node668, Node669, Node67, Node670, Node671, Node672, Node673, Node674, Node675, Node676, Node677, Node678, Node679, Node68, Node680, Node681, Node682, Node683, Node684, Node685, Node686, Node687, Node688, Node689, Node69, Node690, Node691, Node692, Node693, Node694, Node695, Node696, Node697, Node698, Node699, Node7, Node70, Node700, Node701, Node702, Node703, Node704, Node705, Node706, Node707, Node708, Node709, Node71, Node710, Node711, Node712, Node713, Node714, Node715, Node716, Node717, Node718, Node719, Node72, Node720, Node721, Node722, Node723, Node724, Node725, Node726, Node727, Node728, Node729, Node73, Node730, Node731, Node732, Node733, Node734, Node735, Node736, Node737, Node738, Node739, Node74, Node740, Node741, Node742, Node743, Node744, Node745, Node746, Node747, Node748, Node749, Node75, Node750, Node751, Node752, Node753, Node754, Node755, Node756, Node757, Node758, Node759, Node76, Node760, Node761, Node762, Node763, Node764, Node765, Node766, Node767, Node768, Node769, Node77, Node770, Node771, Node772, Node773, Node774, Node775, Node776, Node777, Node778, Node779, Node78, Node780, Node781, Node782, Node783, Node784, Node785, Node786, Node79, Node8, Node80, Node81, Node82, Node83, Node84, Node85, Node86, Node87, Node88, Node9, Node998, Node999`
+* Log(L) = -6643.53, AIC-c = 15482.74 (1097 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.133
+* Tree length (expected substitutions/site) for partition 1 :    0.133
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  1.000
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|      311       |       1        |        1.012   |        7.386   |       Pos. posterior = 0.9283       |
+|      473       |       1        |        0.728   |       16.073   |       Pos. posterior = 0.9824       |
+|      492       |       1        |        1.081   |       16.207   |       Pos. posterior = 0.9809       |
+|      678       |       1        |        0.943   |        6.098   |       Pos. posterior = 0.9194       |
+|      719       |       1        |        0.998   |        6.715   |       Pos. posterior = 0.9224       |
+----
+## FUBAR inferred 5 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.27 are expected to be false positives (95% confidence interval of 0-1 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 46 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.aln.treefile
+
+>Loaded a multiple sequence alignment with **321** sequences, **892** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1015.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 131 zero-length internal branches: `Node10, Node11, Node12, Node13, Node14, Node140, Node15, Node156, Node16, Node17, Node174, Node175, Node18, Node19, Node190, Node194, Node195, Node196, Node197, Node2, Node20, Node207, Node21, Node22, Node220, Node222, Node223, Node224, Node23, Node24, Node25, Node26, Node27, Node275, Node28, Node283, Node29, Node293, Node3, Node30, Node302, Node31, Node316, Node32, Node33, Node34, Node340, Node344, Node346, Node35, Node356, Node36, Node363, Node37, Node38, Node387, Node39, Node4, Node40, Node41, Node411, Node415, Node42, Node426, Node43, Node436, Node438, Node439, Node44, Node441, Node447, Node45, Node453, Node454, Node456, Node459, Node46, Node460, Node466, Node468, Node47, Node48, Node5, Node506, Node513, Node514, Node517, Node518, Node524, Node525, Node526, Node527, Node531, Node536, Node537, Node538, Node54, Node542, Node543, Node547, Node548, Node55, Node551, Node552, Node555, Node556, Node560, Node562, Node563, Node564, Node569, Node57, Node570, Node571, Node572, Node582, Node585, Node586, Node590, Node591, Node594, Node595, Node6, Node62, Node65, Node7, Node74, Node79, Node8, Node9, Node90`
+* Log(L) = -18284.13, AIC-c = 37863.24 (647 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.809
+* Tree length (expected substitutions/site) for partition 1 :    0.809
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  1.000
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       13       |       1        |        0.497   |       40.767   |       Pos. posterior = 1.0000       |
+|       30       |       1        |        0.399   |       16.651   |       Pos. posterior = 1.0000       |
+|      129       |       1        |        0.519   |       14.920   |       Pos. posterior = 0.9989       |
+|      144       |       1        |        1.237   |        9.105   |       Pos. posterior = 0.9269       |
+|      145       |       1        |        1.592   |       10.866   |       Pos. posterior = 0.9188       |
+|      146       |       1        |        1.141   |        7.533   |       Pos. posterior = 0.9039       |
+|      148       |       1        |        1.780   |       14.445   |       Pos. posterior = 0.9400       |
+|      154       |       1        |        1.541   |        6.657   |       Pos. posterior = 0.9073       |
+|      179       |       1        |        0.451   |       28.924   |       Pos. posterior = 1.0000       |
+|      184       |       1        |        0.537   |        7.909   |       Pos. posterior = 0.9961       |
+|      230       |       1        |        0.393   |       29.307   |       Pos. posterior = 1.0000       |
+|      232       |       1        |        0.467   |       29.477   |       Pos. posterior = 1.0000       |
+|      310       |       1        |        0.510   |       28.862   |       Pos. posterior = 1.0000       |
+|      353       |       1        |        0.538   |        2.621   |       Pos. posterior = 0.9241       |
+|      365       |       1        |        0.505   |        5.368   |       Pos. posterior = 0.9894       |
+|      374       |       1        |        0.417   |       14.575   |       Pos. posterior = 0.9998       |
+|      380       |       1        |        0.498   |        1.972   |       Pos. posterior = 0.9049       |
+|      382       |       1        |        0.367   |       15.268   |       Pos. posterior = 1.0000       |
+|      384       |       1        |        0.580   |        7.752   |       Pos. posterior = 0.9941       |
+|      385       |       1        |        0.533   |        5.556   |       Pos. posterior = 0.9877       |
+|      388       |       1        |        0.409   |       15.134   |       Pos. posterior = 0.9999       |
+|      419       |       1        |        0.442   |       15.374   |       Pos. posterior = 0.9999       |
+|      424       |       1        |        0.749   |        9.787   |       Pos. posterior = 0.9778       |
+|      438       |       1        |        0.758   |        7.227   |       Pos. posterior = 0.9909       |
+|      441       |       1        |        0.524   |        3.430   |       Pos. posterior = 0.9635       |
+|      445       |       1        |        0.664   |        4.204   |       Pos. posterior = 0.9561       |
+|      483       |       1        |        0.934   |        7.220   |       Pos. posterior = 0.9705       |
+|      485       |       1        |        0.487   |        1.871   |       Pos. posterior = 0.9014       |
+|      492       |       1        |        1.046   |       15.555   |       Pos. posterior = 0.9993       |
+|      495       |       1        |        0.709   |       29.490   |       Pos. posterior = 1.0000       |
+|      672       |       1        |        0.699   |       29.143   |       Pos. posterior = 0.9999       |
+|      706       |       1        |        0.447   |       16.112   |       Pos. posterior = 1.0000       |
+|      752       |       1        |        0.408   |       11.253   |       Pos. posterior = 0.9999       |
+|      777       |       1        |        0.433   |        4.185   |       Pos. posterior = 0.9899       |
+|      779       |       1        |        0.600   |       29.890   |       Pos. posterior = 1.0000       |
+|      784       |       1        |        0.531   |       29.737   |       Pos. posterior = 1.0000       |
+|      786       |       1        |        1.011   |        7.118   |       Pos. posterior = 0.9769       |
+|      790       |       1        |        0.429   |        2.625   |       Pos. posterior = 0.9677       |
+|      799       |       1        |        0.370   |       16.089   |       Pos. posterior = 1.0000       |
+----
+## FUBAR inferred 39 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.91 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 181 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.aln.treefile
+
+>Loaded a multiple sequence alignment with **514** sequences, **846** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1016.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 422 zero-length internal branches: `Node10, Node100, Node101, Node102, Node103, Node104, Node105, Node106, Node107, Node108, Node11, Node116, Node119, Node12, Node120, Node123, Node127, Node128, Node13, Node132, Node133, Node134, Node135, Node136, Node137, Node139, Node14, Node140, Node147, Node149, Node15, Node151, Node154, Node16, Node160, Node161, Node162, Node163, Node164, Node165, Node166, Node167, Node168, Node169, Node17, Node170, Node171, Node172, Node173, Node174, Node175, Node18, Node188, Node189, Node19, Node194, Node197, Node2, Node20, Node200, Node201, Node204, Node208, Node21, Node217, Node22, Node23, Node233, Node236, Node237, Node239, Node24, Node240, Node243, Node245, Node247, Node25, Node254, Node255, Node256, Node257, Node258, Node26, Node262, Node266, Node267, Node27, Node279, Node28, Node280, Node282, Node284, Node286, Node287, Node288, Node289, Node29, Node290, Node293, Node294, Node295, Node296, Node297, Node3, Node30, Node301, Node302, Node308, Node31, Node313, Node317, Node318, Node319, Node32, Node320, Node321, Node324, Node33, Node330, Node331, Node332, Node34, Node340, Node345, Node346, Node349, Node35, Node350, Node356, Node36, Node360, Node363, Node367, Node37, Node371, Node372, Node377, Node378, Node38, Node382, Node39, Node395, Node4, Node40, Node403, Node408, Node41, Node413, Node416, Node417, Node418, Node419, Node42, Node420, Node421, Node422, Node426, Node428, Node43, Node431, Node432, Node433, Node436, Node437, Node438, Node439, Node44, Node442, Node443, Node447, Node448, Node449, Node45, Node450, Node451, Node46, Node461, Node466, Node467, Node468, Node47, Node472, Node473, Node476, Node48, Node481, Node482, Node483, Node489, Node49, Node490, Node493, Node498, Node5, Node50, Node500, Node503, Node504, Node505, Node506, Node507, Node508, Node509, Node51, Node511, Node512, Node514, Node515, Node516, Node517, Node52, Node520, Node525, Node526, Node53, Node534, Node535, Node54, Node542, Node545, Node546, Node55, Node551, Node552, Node56, Node568, Node57, Node571, Node572, Node574, Node575, Node576, Node577, Node578, Node579, Node58, Node580, Node583, Node584, Node585, Node586, Node587, Node588, Node589, Node59, Node590, Node591, Node592, Node593, Node594, Node595, Node596, Node597, Node598, Node599, Node6, Node60, Node600, Node601, Node602, Node603, Node61, Node62, Node626, Node628, Node629, Node63, Node632, Node634, Node635, Node638, Node639, Node64, Node640, Node641, Node646, Node647, Node649, Node65, Node650, Node653, Node659, Node66, Node660, Node661, Node662, Node667, Node668, Node67, Node671, Node68, Node680, Node686, Node687, Node69, Node690, Node694, Node695, Node698, Node7, Node70, Node701, Node702, Node705, Node71, Node712, Node713, Node716, Node72, Node721, Node722, Node725, Node73, Node730, Node731, Node732, Node735, Node739, Node74, Node740, Node741, Node742, Node75, Node750, Node752, Node757, Node758, Node759, Node76, Node760, Node761, Node763, Node764, Node765, Node766, Node77, Node770, Node771, Node777, Node78, Node780, Node782, Node783, Node79, Node792, Node795, Node798, Node8, Node80, Node800, Node801, Node802, Node803, Node805, Node806, Node807, Node81, Node810, Node817, Node82, Node820, Node821, Node825, Node826, Node827, Node828, Node829, Node83, Node830, Node835, Node838, Node839, Node84, Node844, Node847, Node848, Node849, Node85, Node855, Node856, Node859, Node86, Node862, Node863, Node867, Node87, Node870, Node872, Node873, Node874, Node875, Node876, Node877, Node878, Node879, Node88, Node880, Node881, Node882, Node89, Node893, Node898, Node899, Node9, Node90, Node900, Node901, Node906, Node908, Node91, Node915, Node916, Node917, Node92, Node921, Node93, Node94, Node95, Node96, Node97, Node98, Node99`
+* Log(L) = -7969.19, AIC-c = 18006.02 (1033 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.199
+* Tree length (expected substitutions/site) for partition 1 :    0.199
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|      144       |       1        |        0.711   |       24.399   |       Pos. posterior = 0.9991       |
+|      185       |       1        |        0.984   |       12.322   |       Pos. posterior = 0.9767       |
+|      225       |       1        |        1.192   |       38.135   |       Pos. posterior = 0.9971       |
+|      228       |       1        |        0.626   |       35.945   |       Pos. posterior = 1.0000       |
+|      232       |       1        |        1.174   |       29.861   |       Pos. posterior = 0.9954       |
+|      321       |       1        |        0.673   |        4.844   |       Pos. posterior = 0.9152       |
+|      454       |       1        |        0.670   |       10.383   |       Pos. posterior = 0.9876       |
+|      484       |       1        |        0.779   |        5.641   |       Pos. posterior = 0.9140       |
+|      811       |       1        |        0.774   |        5.675   |       Pos. posterior = 0.9152       |
+|      827       |       1        |        1.160   |       49.972   |       Pos. posterior = 0.9994       |
+----
+## FUBAR inferred 10 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.30 are expected to be false positives (95% confidence interval of 0-2 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 367 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.aln.treefile
+
+>Loaded a multiple sequence alignment with **965** sequences, **844** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1017.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 807 zero-length internal branches: `Node10, Node100, Node1000, Node101, Node1010, Node1011, Node1012, Node1020, Node1023, Node1025, Node1029, Node103, Node1030, Node1032, Node1033, Node1039, Node1042, Node1043, Node1044, Node1045, Node1046, Node1048, Node1049, Node1050, Node1051, Node1052, Node1053, Node1054, Node1055, Node1056, Node1057, Node1058, Node1067, Node1068, Node1071, Node1075, Node108, Node1082, Node1087, Node1088, Node1089, Node109, Node1092, Node1093, Node1095, Node11, Node1102, Node1105, Node1106, Node1110, Node1113, Node1114, Node1115, Node1120, Node1121, Node1124, Node1129, Node1130, Node1133, Node1136, Node1137, Node114, Node1141, Node1142, Node1145, Node1148, Node1149, Node115, Node1152, Node1153, Node1157, Node116, Node1162, Node1163, Node1164, Node1166, Node117, Node1172, Node1177, Node1178, Node118, Node1184, Node1185, Node1187, Node1188, Node1189, Node119, Node1190, Node1191, Node1192, Node1199, Node12, Node120, Node1206, Node1209, Node121, Node1210, Node1211, Node1212, Node1218, Node1221, Node1222, Node1230, Node1234, Node1241, Node1242, Node1243, Node1248, Node1250, Node1251, Node1256, Node1257, Node1258, Node1259, Node126, Node1260, Node1261, Node1262, Node1263, Node1270, Node1271, Node1273, Node1274, Node1278, Node1281, Node1282, Node1285, Node1288, Node1294, Node1299, Node1300, Node1305, Node1308, Node1309, Node131, Node1310, Node1318, Node1319, Node132, Node1320, Node1324, Node1325, Node1328, Node1329, Node133, Node1332, Node1337, Node1338, Node1340, Node1347, Node1348, Node1350, Node1351, Node1352, Node136, Node1360, Node1361, Node1364, Node1374, Node1386, Node1387, Node1391, Node1393, Node1396, Node1399, Node14, Node140, Node141, Node1413, Node1414, Node1415, Node1416, Node1423, Node1424, Node1427, Node1428, Node1429, Node1430, Node1431, Node1432, Node1433, Node1434, Node1435, Node1436, Node1437, Node1438, Node1439, Node144, Node1440, Node1441, Node1442, Node1443, Node1444, Node1445, Node1446, Node1447, Node1448, Node1449, Node1471, Node1472, Node1477, Node1485, Node1486, Node1488, Node149, Node1493, Node1494, Node1497, Node1498, Node1499, Node15, Node150, Node1500, Node1501, Node1502, Node1505, Node1508, Node1509, Node151, Node1514, Node152, Node153, Node1534, Node1535, Node154, Node1545, Node155, Node1558, Node156, Node1562, Node157, Node1579, Node158, Node159, Node1593, Node16, Node160, Node1600, Node1603, Node1604, Node161, Node1611, Node1616, Node1619, Node162, Node1622, Node1623, Node1624, Node1625, Node1626, Node1627, Node163, Node1631, Node1632, Node1633, Node1635, Node1636, Node1637, Node1638, Node1639, Node164, Node1640, Node1641, Node1642, Node1643, Node1644, Node1645, Node1646, Node1647, Node1648, Node1649, Node165, Node1650, Node1651, Node1652, Node1653, Node1654, Node166, Node1669, Node167, Node1670, Node1673, Node1676, Node1677, Node1678, Node168, Node1681, Node1684, Node1687, Node1688, Node169, Node1691, Node1694, Node1695, Node1699, Node17, Node170, Node1700, Node1706, Node171, Node1715, Node172, Node1720, Node1721, Node1725, Node1726, Node1727, Node173, Node1732, Node1735, Node1737, Node174, Node1742, Node1743, Node1744, Node1749, Node175, Node1752, Node1755, Node1757, Node176, Node1760, Node1761, Node1764, Node1767, Node1768, Node1769, Node177, Node1771, Node1772, Node1773, Node1774, Node1775, Node1776, Node1777, Node1778, Node1779, Node178, Node1780, Node1781, Node1782, Node1783, Node1784, Node1785, Node1786, Node1787, Node1788, Node1789, Node179, Node1790, Node1791, Node1792, Node1793, Node1794, Node1795, Node18, Node180, Node181, Node1816, Node1817, Node182, Node1821, Node1822, Node1824, Node1827, Node1828, Node183, Node1832, Node1833, Node1834, Node1838, Node184, Node1841, Node1842, Node1843, Node185, Node1850, Node1854, Node1856, Node1859, Node186, Node1865, Node1868, Node1869, Node187, Node1872, Node1873, Node1874, Node1878, Node1879, Node188, Node1882, Node1883, Node1885, Node1886, Node1887, Node189, Node1895, Node1896, Node19, Node190, Node1903, Node1904, Node1905, Node1907, Node191, Node1913, Node1914, Node1918, Node192, Node1921, Node1922, Node193, Node194, Node195, Node196, Node197, Node198, Node199, Node20, Node200, Node201, Node202, Node203, Node204, Node205, Node206, Node207, Node208, Node209, Node21, Node210, Node211, Node212, Node213, Node214, Node215, Node216, Node217, Node218, Node219, Node220, Node221, Node222, Node223, Node224, Node225, Node226, Node227, Node228, Node229, Node23, Node230, Node231, Node232, Node233, Node234, Node235, Node236, Node237, Node238, Node239, Node24, Node240, Node241, Node242, Node243, Node244, Node245, Node246, Node247, Node248, Node249, Node25, Node250, Node251, Node252, Node253, Node254, Node255, Node256, Node257, Node258, Node259, Node26, Node260, Node261, Node262, Node263, Node264, Node265, Node266, Node267, Node268, Node269, Node27, Node270, Node271, Node272, Node273, Node274, Node275, Node276, Node277, Node278, Node279, Node28, Node280, Node281, Node282, Node283, Node284, Node285, Node286, Node287, Node288, Node289, Node29, Node290, Node291, Node292, Node293, Node294, Node295, Node296, Node297, Node298, Node299, Node3, Node30, Node300, Node301, Node302, Node303, Node304, Node305, Node306, Node307, Node308, Node309, Node310, Node311, Node312, Node313, Node314, Node315, Node316, Node317, Node318, Node319, Node320, Node38, Node494, Node495, Node496, Node497, Node5, Node503, Node504, Node507, Node511, Node514, Node515, Node518, Node521, Node524, Node525, Node528, Node531, Node532, Node533, Node534, Node535, Node536, Node537, Node538, Node539, Node540, Node541, Node542, Node543, Node544, Node546, Node547, Node550, Node555, Node56, Node562, Node563, Node569, Node571, Node578, Node579, Node585, Node586, Node588, Node591, Node594, Node595, Node596, Node597, Node6, Node600, Node604, Node605, Node606, Node607, Node61, Node613, Node614, Node62, Node620, Node621, Node625, Node628, Node629, Node630, Node631, Node637, Node638, Node641, Node645, Node646, Node648, Node649, Node65, Node652, Node658, Node659, Node662, Node665, Node667, Node670, Node671, Node675, Node676, Node677, Node678, Node679, Node680, Node681, Node683, Node684, Node685, Node686, Node687, Node688, Node689, Node690, Node691, Node692, Node693, Node694, Node695, Node696, Node697, Node698, Node699, Node7, Node70, Node700, Node701, Node702, Node703, Node704, Node705, Node706, Node707, Node708, Node709, Node71, Node710, Node711, Node712, Node713, Node714, Node715, Node716, Node717, Node718, Node719, Node720, Node721, Node722, Node723, Node724, Node725, Node726, Node727, Node728, Node729, Node730, Node731, Node732, Node733, Node734, Node735, Node736, Node737, Node738, Node739, Node740, Node741, Node742, Node743, Node744, Node745, Node746, Node747, Node748, Node749, Node75, Node750, Node751, Node752, Node753, Node754, Node755, Node756, Node757, Node758, Node759, Node760, Node761, Node762, Node763, Node764, Node765, Node766, Node767, Node79, Node8, Node80, Node83, Node848, Node849, Node851, Node852, Node853, Node854, Node855, Node858, Node861, Node862, Node866, Node871, Node872, Node873, Node876, Node88, Node882, Node885, Node886, Node887, Node89, Node890, Node895, Node896, Node9, Node90, Node901, Node904, Node908, Node91, Node911, Node912, Node913, Node914, Node915, Node916, Node92, Node920, Node923, Node924, Node93, Node932, Node936, Node937, Node938, Node939, Node94, Node940, Node943, Node946, Node949, Node95, Node950, Node954, Node955, Node96, Node960, Node964, Node97, Node974, Node98, Node980, Node981, Node982, Node989, Node99, Node992, Node993, Node994, Node996, Node997, Node998, Node999`
+* Log(L) = -14043.95, AIC-c = 31960.96 (1935 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.493
+* Tree length (expected substitutions/site) for partition 1 :    0.493
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       5        |       1        |        0.553   |        5.866   |       Pos. posterior = 0.9888       |
+|       45       |       1        |        1.305   |        8.819   |       Pos. posterior = 0.9836       |
+|       81       |       1        |        3.056   |       22.708   |       Pos. posterior = 0.9896       |
+|       88       |       1        |        0.847   |        6.764   |       Pos. posterior = 0.9750       |
+|      158       |       1        |        1.578   |       11.359   |       Pos. posterior = 0.9386       |
+|      285       |       1        |        0.814   |        6.595   |       Pos. posterior = 0.9721       |
+|      317       |       1        |        0.772   |        4.005   |       Pos. posterior = 0.9180       |
+|      340       |       1        |        1.257   |        5.783   |       Pos. posterior = 0.9047       |
+|      344       |       1        |        0.631   |        5.887   |       Pos. posterior = 0.9814       |
+|      346       |       1        |        0.599   |        2.710   |       Pos. posterior = 0.9019       |
+|      355       |       1        |        0.695   |       11.082   |       Pos. posterior = 0.9969       |
+|      359       |       1        |        0.647   |        6.431   |       Pos. posterior = 0.9878       |
+|      383       |       1        |        1.480   |        6.492   |       Pos. posterior = 0.9142       |
+|      400       |       1        |        0.763   |        3.409   |       Pos. posterior = 0.9024       |
+|      412       |       1        |        0.695   |       10.238   |       Pos. posterior = 0.9968       |
+|      449       |       1        |        0.738   |       12.475   |       Pos. posterior = 0.9957       |
+|      450       |       1        |        0.715   |        9.402   |       Pos. posterior = 0.9961       |
+|      452       |       1        |        0.719   |        9.121   |       Pos. posterior = 0.9961       |
+|      495       |       1        |        1.987   |        7.228   |       Pos. posterior = 0.9361       |
+|      568       |       1        |        0.533   |       18.342   |       Pos. posterior = 1.0000       |
+|      662       |       1        |        0.690   |       10.963   |       Pos. posterior = 0.9971       |
+|      664       |       1        |        1.287   |       13.982   |       Pos. posterior = 0.9929       |
+|      684       |       1        |        0.715   |        7.417   |       Pos. posterior = 0.9938       |
+|      719       |       1        |        0.664   |       12.148   |       Pos. posterior = 0.9979       |
+|      763       |       1        |        0.637   |        3.634   |       Pos. posterior = 0.9230       |
+|      765       |       1        |        0.792   |        5.068   |       Pos. posterior = 0.9416       |
+----
+## FUBAR inferred 26 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.88 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 32 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.aln.treefile
+
+>Loaded a multiple sequence alignment with **358** sequences, **869** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1018.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 156 zero-length internal branches: `Node100, Node101, Node102, Node103, Node106, Node11, Node111, Node112, Node116, Node117, Node119, Node122, Node125, Node126, Node127, Node128, Node129, Node130, Node14, Node152, Node154, Node155, Node16, Node160, Node161, Node162, Node163, Node166, Node167, Node172, Node173, Node174, Node182, Node19, Node20, Node205, Node224, Node229, Node231, Node233, Node250, Node253, Node26, Node265, Node273, Node28, Node29, Node292, Node294, Node300, Node31, Node313, Node316, Node318, Node320, Node323, Node324, Node325, Node329, Node33, Node330, Node331, Node332, Node336, Node337, Node338, Node342, Node352, Node353, Node355, Node356, Node36, Node364, Node369, Node371, Node372, Node373, Node375, Node376, Node377, Node378, Node38, Node382, Node391, Node4, Node416, Node418, Node425, Node440, Node442, Node451, Node452, Node457, Node48, Node481, Node483, Node5, Node508, Node509, Node518, Node52, Node523, Node530, Node533, Node535, Node558, Node56, Node564, Node576, Node577, Node58, Node587, Node598, Node6, Node613, Node627, Node629, Node631, Node632, Node641, Node645, Node646, Node647, Node648, Node649, Node650, Node651, Node652, Node653, Node654, Node663, Node664, Node665, Node668, Node670, Node671, Node672, Node673, Node677, Node685, Node689, Node690, Node695, Node696, Node702, Node704, Node74, Node78, Node81, Node87, Node88, Node89, Node90, Node91, Node92, Node96`
+* Log(L) = -15251.85, AIC-c = 31946.82 (721 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.560
+* Tree length (expected substitutions/site) for partition 1 :    0.560
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  1.000
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       79       |       1        |        0.618   |        3.907   |       Pos. posterior = 0.9405       |
+|       82       |       1        |        0.544   |       10.338   |       Pos. posterior = 0.9986       |
+|      137       |       1        |        0.498   |        7.395   |       Pos. posterior = 0.9995       |
+|      138       |       1        |        0.521   |        3.600   |       Pos. posterior = 0.9655       |
+|      143       |       1        |        0.668   |        8.253   |       Pos. posterior = 0.9914       |
+|      144       |       1        |        0.643   |        2.710   |       Pos. posterior = 0.9170       |
+|      214       |       1        |        0.831   |       15.304   |       Pos. posterior = 0.9939       |
+|      225       |       1        |        0.557   |        8.615   |       Pos. posterior = 0.9981       |
+|      261       |       1        |        1.147   |        7.257   |       Pos. posterior = 0.9421       |
+|      287       |       1        |        1.706   |        9.291   |       Pos. posterior = 0.9220       |
+|      312       |       1        |        0.581   |       16.217   |       Pos. posterior = 0.9998       |
+|      314       |       1        |        0.648   |       16.228   |       Pos. posterior = 0.9992       |
+|      365       |       1        |        0.517   |       29.309   |       Pos. posterior = 1.0000       |
+|      367       |       1        |        0.500   |       29.629   |       Pos. posterior = 1.0000       |
+|      370       |       1        |        0.475   |       29.336   |       Pos. posterior = 1.0000       |
+|      408       |       1        |        0.582   |        3.041   |       Pos. posterior = 0.9220       |
+|      467       |       1        |        1.015   |       29.751   |       Pos. posterior = 0.9945       |
+|      475       |       1        |        0.699   |        6.574   |       Pos. posterior = 0.9839       |
+|      476       |       1        |        0.649   |        5.292   |       Pos. posterior = 0.9788       |
+|      477       |       1        |        1.479   |        6.680   |       Pos. posterior = 0.9249       |
+|      479       |       1        |        0.475   |       23.954   |       Pos. posterior = 1.0000       |
+|      552       |       1        |        0.569   |        3.854   |       Pos. posterior = 0.9700       |
+|      646       |       1        |        0.505   |       28.589   |       Pos. posterior = 1.0000       |
+|      653       |       1        |        3.653   |       19.238   |       Pos. posterior = 0.9661       |
+|      664       |       1        |        0.451   |       30.075   |       Pos. posterior = 1.0000       |
+|      757       |       1        |        0.623   |        5.487   |       Pos. posterior = 0.9829       |
+|      830       |       1        |        0.511   |       14.689   |       Pos. posterior = 0.9998       |
+|      835       |       1        |        0.590   |        4.919   |       Pos. posterior = 0.9796       |
+|      841       |       1        |        0.900   |       14.806   |       Pos. posterior = 0.9986       |
+|      845       |       1        |        0.463   |       13.466   |       Pos. posterior = 0.9999       |
+|      846       |       1        |        0.617   |        8.380   |       Pos. posterior = 0.9951       |
+|      847       |       1        |        0.671   |        6.628   |       Pos. posterior = 0.9853       |
+|      848       |       1        |        0.507   |       32.634   |       Pos. posterior = 1.0000       |
+|      852       |       1        |        0.575   |        2.750   |       Pos. posterior = 0.9334       |
+|      854       |       1        |        1.047   |       12.943   |       Pos. posterior = 0.9909       |
+|      855       |       1        |        0.687   |        7.952   |       Pos. posterior = 0.9901       |
+----
+## FUBAR inferred 36 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.74 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 11 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.aln.treefile
+
+>Loaded a multiple sequence alignment with **191** sequences, **877** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1019.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 89 zero-length internal branches: `Node102, Node106, Node112, Node116, Node119, Node12, Node128, Node134, Node14, Node15, Node159, Node164, Node166, Node167, Node169, Node17, Node170, Node173, Node177, Node18, Node180, Node191, Node2, Node203, Node213, Node214, Node216, Node217, Node218, Node220, Node221, Node222, Node223, Node224, Node225, Node227, Node228, Node229, Node233, Node236, Node241, Node244, Node247, Node248, Node249, Node25, Node250, Node251, Node258, Node260, Node263, Node266, Node274, Node277, Node28, Node282, Node293, Node300, Node301, Node304, Node318, Node322, Node334, Node336, Node337, Node338, Node339, Node340, Node349, Node354, Node357, Node365, Node370, Node39, Node45, Node51, Node52, Node53, Node56, Node57, Node6, Node7, Node71, Node74, Node76, Node78, Node8, Node9, Node99`
+* Log(L) = -9122.69, AIC-c = 19019.99 (387 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.258
+* Tree length (expected substitutions/site) for partition 1 :    0.258
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       1        |       1        |        0.613   |       44.876   |       Pos. posterior = 1.0000       |
+|       5        |       1        |        0.591   |        4.447   |       Pos. posterior = 0.9209       |
+|       9        |       1        |        0.605   |        7.473   |       Pos. posterior = 0.9652       |
+|       64       |       1        |        0.761   |       44.609   |       Pos. posterior = 0.9999       |
+|       65       |       1        |        0.724   |       31.801   |       Pos. posterior = 0.9999       |
+|       67       |       1        |        0.720   |        4.769   |       Pos. posterior = 0.9107       |
+|       70       |       1        |        3.119   |       23.530   |       Pos. posterior = 0.9684       |
+|      134       |       1        |        0.689   |        6.442   |       Pos. posterior = 0.9654       |
+|      137       |       1        |        0.657   |        6.258   |       Pos. posterior = 0.9667       |
+|      144       |       1        |        0.765   |        8.738   |       Pos. posterior = 0.9799       |
+|      150       |       1        |        0.636   |        6.105   |       Pos. posterior = 0.9672       |
+|      200       |       1        |        0.867   |       25.727   |       Pos. posterior = 0.9979       |
+|      310       |       1        |        1.283   |        7.451   |       Pos. posterior = 0.9445       |
+|      323       |       1        |        0.784   |       16.565   |       Pos. posterior = 0.9954       |
+|      325       |       1        |        0.728   |       12.906   |       Pos. posterior = 0.9930       |
+|      332       |       1        |        0.765   |        8.357   |       Pos. posterior = 0.9735       |
+|      341       |       1        |        0.758   |        7.857   |       Pos. posterior = 0.9768       |
+|      343       |       1        |        0.678   |        6.700   |       Pos. posterior = 0.9691       |
+|      348       |       1        |        0.598   |       13.625   |       Pos. posterior = 0.9981       |
+|      368       |       1        |        0.770   |        6.423   |       Pos. posterior = 0.9576       |
+|      370       |       1        |        3.083   |       40.921   |       Pos. posterior = 0.9961       |
+|      429       |       1        |        0.790   |       46.013   |       Pos. posterior = 0.9999       |
+|      467       |       1        |        0.650   |        4.298   |       Pos. posterior = 0.9076       |
+|      471       |       1        |        1.628   |        8.238   |       Pos. posterior = 0.9386       |
+|      472       |       1        |        2.488   |       10.744   |       Pos. posterior = 0.9247       |
+|      722       |       1        |        0.694   |        4.717   |       Pos. posterior = 0.9127       |
+|      763       |       1        |        0.637   |        8.809   |       Pos. posterior = 0.9906       |
+----
+## FUBAR inferred 27 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.88 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 1 duplicate sequence. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.aln.treefile
+
+>Loaded a multiple sequence alignment with **120** sequences, **859** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1020.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 22 zero-length internal branches: `Node10, Node114, Node124, Node126, Node128, Node129, Node130, Node132, Node133, Node136, Node155, Node18, Node198, Node204, Node225, Node31, Node39, Node46, Node54, Node6, Node62, Node63`
+* Log(L) = -10322.38, AIC-c = 21135.15 (245 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.336
+* Tree length (expected substitutions/site) for partition 1 :    0.336
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       2        |       1        |        1.637   |        9.276   |       Pos. posterior = 0.9357       |
+|       5        |       1        |        0.555   |       17.229   |       Pos. posterior = 0.9997       |
+|       8        |       1        |        0.912   |       14.239   |       Pos. posterior = 0.9866       |
+|      192       |       1        |        0.565   |        4.961   |       Pos. posterior = 0.9567       |
+|      195       |       1        |        0.634   |        9.910   |       Pos. posterior = 0.9913       |
+|      275       |       1        |        0.815   |        7.216   |       Pos. posterior = 0.9665       |
+|      276       |       1        |        0.745   |       28.985   |       Pos. posterior = 0.9991       |
+|      296       |       1        |        0.750   |        5.424   |       Pos. posterior = 0.9443       |
+|      299       |       1        |        1.466   |        8.513   |       Pos. posterior = 0.9208       |
+|      322       |       1        |        0.845   |       11.450   |       Pos. posterior = 0.9820       |
+|      323       |       1        |        0.565   |        4.789   |       Pos. posterior = 0.9536       |
+|      340       |       1        |        0.601   |        8.879   |       Pos. posterior = 0.9909       |
+|      348       |       1        |        0.741   |       26.187   |       Pos. posterior = 0.9982       |
+|      349       |       1        |        1.474   |       32.508   |       Pos. posterior = 0.9996       |
+|      352       |       1        |        0.682   |       34.593   |       Pos. posterior = 0.9999       |
+|      364       |       1        |        0.593   |        4.529   |       Pos. posterior = 0.9447       |
+|      401       |       1        |        0.517   |       18.824   |       Pos. posterior = 0.9999       |
+|      404       |       1        |        0.694   |       11.319   |       Pos. posterior = 0.9906       |
+|      467       |       1        |        0.533   |       29.348   |       Pos. posterior = 1.0000       |
+|      468       |       1        |        0.669   |       10.090   |       Pos. posterior = 0.9896       |
+|      479       |       1        |        1.407   |       16.797   |       Pos. posterior = 0.9931       |
+|      503       |       1        |        0.603   |       16.796   |       Pos. posterior = 0.9991       |
+|      591       |       1        |        0.521   |        9.120   |       Pos. posterior = 0.9962       |
+|      623       |       1        |        0.669   |       24.045   |       Pos. posterior = 0.9989       |
+|      640       |       1        |        0.555   |        4.007   |       Pos. posterior = 0.9119       |
+|      642       |       1        |        0.574   |        7.870   |       Pos. posterior = 0.9847       |
+|      686       |       1        |        0.552   |       30.252   |       Pos. posterior = 1.0000       |
+|      687       |       1        |        0.569   |       33.196   |       Pos. posterior = 1.0000       |
+|      730       |       1        |        0.491   |        6.828   |       Pos. posterior = 0.9944       |
+|      753       |       1        |        0.838   |       10.832   |       Pos. posterior = 0.9813       |
+|      755       |       1        |        0.627   |       16.572   |       Pos. posterior = 0.9981       |
+|      838       |       1        |        0.667   |       49.863   |       Pos. posterior = 1.0000       |
+|      840       |       1        |        0.915   |       30.476   |       Pos. posterior = 0.9976       |
+|      843       |       1        |        0.775   |       43.508   |       Pos. posterior = 0.9999       |
+|      848       |       1        |        0.621   |       22.217   |       Pos. posterior = 0.9993       |
+----
+## FUBAR inferred 35 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.60 are expected to be false positives (95% confidence interval of 0-2 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 4 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.aln.treefile
+
+>Loaded a multiple sequence alignment with **328** sequences, **863** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1021.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 70 zero-length internal branches: `Node105, Node128, Node13, Node143, Node145, Node148, Node167, Node174, Node197, Node198, Node200, Node202, Node224, Node244, Node246, Node247, Node269, Node276, Node28, Node299, Node313, Node319, Node32, Node321, Node34, Node344, Node359, Node362, Node363, Node366, Node369, Node390, Node393, Node438, Node457, Node463, Node464, Node465, Node466, Node467, Node468, Node47, Node474, Node475, Node477, Node48, Node489, Node490, Node494, Node495, Node496, Node50, Node509, Node516, Node521, Node545, Node55, Node570, Node571, Node572, Node598, Node6, Node60, Node65, Node67, Node69, Node73, Node8, Node88, Node95`
+* Log(L) = -22352.31, AIC-c = 46027.65 (661 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.967
+* Tree length (expected substitutions/site) for partition 1 :    0.967
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.000
+	* non-synonymous rate =  1.000
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       16       |       1        |        0.641   |       11.468   |       Pos. posterior = 1.0000       |
+|       81       |       1        |        0.425   |       20.299   |       Pos. posterior = 1.0000       |
+|       83       |       1        |        1.783   |       16.140   |       Pos. posterior = 1.0000       |
+|      135       |       1        |        0.494   |        2.863   |       Pos. posterior = 0.9827       |
+|      141       |       1        |        0.576   |        5.615   |       Pos. posterior = 0.9820       |
+|      147       |       1        |        0.870   |        4.266   |       Pos. posterior = 0.9511       |
+|      149       |       1        |        0.932   |        5.851   |       Pos. posterior = 0.9510       |
+|      150       |       1        |        0.521   |        4.102   |       Pos. posterior = 0.9864       |
+|      152       |       1        |        0.475   |        6.117   |       Pos. posterior = 0.9945       |
+|      155       |       1        |        0.970   |       29.877   |       Pos. posterior = 1.0000       |
+|      157       |       1        |        0.496   |        2.898   |       Pos. posterior = 0.9862       |
+|      159       |       1        |        0.391   |       15.650   |       Pos. posterior = 1.0000       |
+|      161       |       1        |        0.683   |        3.702   |       Pos. posterior = 0.9851       |
+|      168       |       1        |        0.845   |       29.150   |       Pos. posterior = 1.0000       |
+|      185       |       1        |        0.525   |        3.375   |       Pos. posterior = 0.9770       |
+|      201       |       1        |        0.411   |        9.056   |       Pos. posterior = 0.9998       |
+|      242       |       1        |        0.519   |        2.025   |       Pos. posterior = 0.9198       |
+|      243       |       1        |        0.486   |        2.113   |       Pos. posterior = 0.9360       |
+|      246       |       1        |        0.519   |        3.956   |       Pos. posterior = 0.9868       |
+|      252       |       1        |        3.511   |       15.167   |       Pos. posterior = 0.9787       |
+|      253       |       1        |        0.535   |        2.931   |       Pos. posterior = 0.9765       |
+|      280       |       1        |        0.502   |       19.433   |       Pos. posterior = 1.0000       |
+|      291       |       1        |        0.400   |        8.162   |       Pos. posterior = 0.9998       |
+|      294       |       1        |        4.890   |       19.222   |       Pos. posterior = 0.9718       |
+|      300       |       1        |        0.622   |        4.075   |       Pos. posterior = 0.9812       |
+|      347       |       1        |        0.413   |        7.162   |       Pos. posterior = 0.9995       |
+|      354       |       1        |        0.477   |       22.688   |       Pos. posterior = 1.0000       |
+|      355       |       1        |        0.732   |       15.594   |       Pos. posterior = 1.0000       |
+|      356       |       1        |        0.646   |        6.230   |       Pos. posterior = 0.9794       |
+|      358       |       1        |        0.477   |       17.557   |       Pos. posterior = 1.0000       |
+|      374       |       1        |        0.842   |       12.293   |       Pos. posterior = 0.9988       |
+|      382       |       1        |        0.402   |        6.452   |       Pos. posterior = 0.9987       |
+|      418       |       1        |        0.536   |        2.552   |       Pos. posterior = 0.9596       |
+|      458       |       1        |        0.313   |        6.913   |       Pos. posterior = 0.9999       |
+|      460       |       1        |        0.334   |        6.812   |       Pos. posterior = 0.9998       |
+|      480       |       1        |        0.537   |        2.689   |       Pos. posterior = 0.9714       |
+|      483       |       1        |        0.853   |       12.395   |       Pos. posterior = 0.9987       |
+|      506       |       1        |        0.383   |        1.496   |       Pos. posterior = 0.9075       |
+|      524       |       1        |        1.509   |        2.892   |       Pos. posterior = 0.9128       |
+|      531       |       1        |        0.388   |        7.072   |       Pos. posterior = 0.9997       |
+|      594       |       1        |        0.391   |       23.361   |       Pos. posterior = 1.0000       |
+|      596       |       1        |        0.480   |        3.258   |       Pos. posterior = 0.9749       |
+|      626       |       1        |        0.490   |        3.744   |       Pos. posterior = 0.9902       |
+|      627       |       1        |        0.802   |        3.027   |       Pos. posterior = 0.9537       |
+|      647       |       1        |        0.406   |        2.179   |       Pos. posterior = 0.9189       |
+|      693       |       1        |        1.872   |        2.897   |       Pos. posterior = 0.9010       |
+|      732       |       1        |        0.383   |       17.719   |       Pos. posterior = 1.0000       |
+|      737       |       1        |        0.434   |       24.739   |       Pos. posterior = 1.0000       |
+|      739       |       1        |        0.473   |       15.337   |       Pos. posterior = 1.0000       |
+|      740       |       1        |        0.418   |        5.760   |       Pos. posterior = 0.9974       |
+|      747       |       1        |        0.415   |        7.963   |       Pos. posterior = 0.9996       |
+|      750       |       1        |        0.461   |        2.158   |       Pos. posterior = 0.9539       |
+|      781       |       1        |        0.408   |        3.603   |       Pos. posterior = 0.9765       |
+|      791       |       1        |        0.478   |        3.834   |       Pos. posterior = 0.9909       |
+|      803       |       1        |        0.377   |       29.357   |       Pos. posterior = 1.0000       |
+|      804       |       1        |        1.018   |        7.078   |       Pos. posterior = 0.9587       |
+|      819       |       1        |        0.490   |        2.581   |       Pos. posterior = 0.9704       |
+|      822       |       1        |        1.002   |       14.886   |       Pos. posterior = 0.9994       |
+|      824       |       1        |        0.360   |        6.369   |       Pos. posterior = 0.9994       |
+|      825       |       1        |        0.388   |        7.090   |       Pos. posterior = 0.9998       |
+|      828       |       1        |        0.857   |       36.889   |       Pos. posterior = 1.0000       |
+|      829       |       1        |        0.486   |       29.761   |       Pos. posterior = 1.0000       |
+|      843       |       1        |        0.455   |        7.648   |       Pos. posterior = 0.9985       |
+|      848       |       1        |        0.348   |        7.023   |       Pos. posterior = 0.9999       |
+----
+## FUBAR inferred 64 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  1.14 are expected to be false positives (95% confidence interval of 0-4 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 18 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.aln.treefile
+
+>Loaded a multiple sequence alignment with **295** sequences, **859** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell2_bc1022.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 182 zero-length internal branches: `Node10, Node105, Node111, Node112, Node113, Node114, Node115, Node117, Node119, Node12, Node120, Node123, Node13, Node132, Node134, Node135, Node136, Node137, Node138, Node139, Node14, Node149, Node15, Node150, Node152, Node156, Node16, Node161, Node17, Node170, Node171, Node172, Node177, Node18, Node180, Node187, Node188, Node189, Node19, Node193, Node195, Node196, Node197, Node20, Node205, Node207, Node21, Node214, Node215, Node216, Node217, Node22, Node220, Node225, Node226, Node227, Node236, Node24, Node246, Node249, Node25, Node255, Node256, Node258, Node259, Node260, Node261, Node263, Node266, Node27, Node273, Node276, Node277, Node282, Node283, Node284, Node285, Node286, Node289, Node295, Node296, Node297, Node298, Node299, Node301, Node303, Node304, Node305, Node306, Node31, Node310, Node311, Node318, Node319, Node32, Node320, Node321, Node322, Node323, Node324, Node325, Node326, Node335, Node336, Node339, Node34, Node347, Node348, Node351, Node354, Node355, Node357, Node358, Node359, Node360, Node367, Node37, Node378, Node383, Node385, Node389, Node391, Node393, Node396, Node40, Node401, Node405, Node410, Node42, Node422, Node423, Node424, Node427, Node428, Node436, Node438, Node439, Node440, Node441, Node443, Node444, Node445, Node45, Node463, Node465, Node466, Node469, Node476, Node479, Node480, Node483, Node488, Node490, Node5, Node502, Node505, Node508, Node52, Node522, Node527, Node534, Node535, Node538, Node539, Node54, Node540, Node542, Node550, Node551, Node566, Node567, Node6, Node69, Node79, Node8, Node81, Node86, Node89, Node9, Node91, Node92, Node94`
+* Log(L) = -10385.93, AIC-c = 21962.79 (595 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.322
+* Tree length (expected substitutions/site) for partition 1 :    0.322
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       14       |       1        |        0.618   |        4.340   |       Pos. posterior = 0.9429       |
+|       22       |       1        |        0.665   |        6.825   |       Pos. posterior = 0.9509       |
+|       84       |       1        |        0.878   |       29.680   |       Pos. posterior = 0.9999       |
+|       89       |       1        |        9.882   |       29.858   |       Pos. posterior = 0.9359       |
+|      191       |       1        |        1.058   |        6.732   |       Pos. posterior = 0.9453       |
+|      236       |       1        |        0.899   |       28.334   |       Pos. posterior = 0.9997       |
+|      334       |       1        |        1.099   |       28.158   |       Pos. posterior = 0.9988       |
+|      338       |       1        |        0.784   |        8.424   |       Pos. posterior = 0.9803       |
+|      341       |       1        |        0.722   |       11.372   |       Pos. posterior = 0.9895       |
+|      390       |       1        |        6.028   |       26.998   |       Pos. posterior = 0.9611       |
+|      391       |       1        |        0.962   |       19.204   |       Pos. posterior = 0.9940       |
+|      395       |       1        |        4.437   |       34.818   |       Pos. posterior = 0.9325       |
+|      401       |       1        |        4.491   |       35.907   |       Pos. posterior = 0.9997       |
+|      410       |       1        |        0.861   |        7.436   |       Pos. posterior = 0.9686       |
+|      491       |       1        |        0.759   |       31.058   |       Pos. posterior = 1.0000       |
+|      521       |       1        |        0.862   |       17.686   |       Pos. posterior = 0.9956       |
+|      591       |       1        |        0.641   |        8.670   |       Pos. posterior = 0.9912       |
+|      738       |       1        |        0.723   |        4.649   |       Pos. posterior = 0.9332       |
+|      747       |       1        |        0.775   |        7.344   |       Pos. posterior = 0.9728       |
+|      759       |       1        |        0.808   |        7.530   |       Pos. posterior = 0.9705       |
+|      784       |       1        |        0.721   |       15.332   |       Pos. posterior = 0.9955       |
+|      788       |       1        |        1.049   |        7.548   |       Pos. posterior = 0.9209       |
+----
+## FUBAR inferred 22 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.62 are expected to be false positives (95% confidence interval of 0-2 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 11 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.aln.treefile
+
+>Loaded a multiple sequence alignment with **57** sequences, **854** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1001.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 48 zero-length internal branches: `Node10, Node100, Node103, Node104, Node105, Node11, Node13, Node15, Node16, Node17, Node18, Node19, Node2, Node22, Node26, Node27, Node3, Node30, Node33, Node34, Node35, Node36, Node37, Node38, Node4, Node45, Node46, Node49, Node5, Node56, Node57, Node58, Node6, Node64, Node65, Node67, Node7, Node72, Node75, Node78, Node84, Node87, Node88, Node9, Node91, Node94, Node95, Node99`
+* Log(L) = -4280.35, AIC-c =  8798.90 (119 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.037
+* Tree length (expected substitutions/site) for partition 1 :    0.037
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.714
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|      210       |       1        |        1.881   |       20.964   |       Pos. posterior = 0.9411       |
+|      397       |       1        |        2.927   |       19.945   |       Pos. posterior = 0.9094       |
+|      750       |       1        |        2.100   |       30.032   |       Pos. posterior = 0.9618       |
+|      771       |       1        |        2.428   |       19.318   |       Pos. posterior = 0.9199       |
+----
+## FUBAR inferred 4 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.27 are expected to be false positives (95% confidence interval of 0-1 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 243 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.aln.treefile
+
+>Loaded a multiple sequence alignment with **448** sequences, **841** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1003.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 397 zero-length internal branches: `Node10, Node100, Node101, Node102, Node103, Node104, Node105, Node106, Node107, Node108, Node109, Node11, Node110, Node111, Node112, Node113, Node114, Node115, Node116, Node117, Node118, Node119, Node12, Node120, Node121, Node122, Node123, Node124, Node125, Node126, Node127, Node128, Node129, Node13, Node130, Node131, Node132, Node133, Node137, Node138, Node139, Node14, Node148, Node149, Node15, Node150, Node151, Node152, Node153, Node154, Node155, Node159, Node16, Node162, Node163, Node164, Node165, Node166, Node169, Node17, Node172, Node173, Node174, Node175, Node176, Node177, Node179, Node18, Node183, Node184, Node188, Node19, Node192, Node193, Node2, Node20, Node206, Node21, Node210, Node211, Node22, Node228, Node23, Node231, Node232, Node235, Node238, Node239, Node24, Node240, Node243, Node248, Node249, Node25, Node250, Node256, Node257, Node26, Node260, Node263, Node264, Node267, Node27, Node270, Node271, Node272, Node273, Node274, Node278, Node28, Node284, Node287, Node288, Node29, Node291, Node294, Node295, Node297, Node298, Node3, Node30, Node304, Node305, Node308, Node309, Node31, Node312, Node318, Node319, Node32, Node323, Node324, Node325, Node326, Node327, Node328, Node329, Node33, Node330, Node331, Node332, Node333, Node334, Node335, Node336, Node337, Node338, Node339, Node34, Node340, Node341, Node342, Node343, Node344, Node345, Node346, Node347, Node348, Node349, Node35, Node350, Node351, Node352, Node353, Node354, Node355, Node356, Node357, Node358, Node359, Node36, Node360, Node361, Node362, Node363, Node364, Node365, Node366, Node367, Node368, Node369, Node37, Node370, Node371, Node372, Node373, Node374, Node375, Node376, Node377, Node378, Node379, Node38, Node380, Node381, Node382, Node383, Node384, Node385, Node386, Node387, Node388, Node389, Node39, Node390, Node391, Node392, Node393, Node394, Node395, Node396, Node397, Node398, Node399, Node4, Node40, Node400, Node401, Node402, Node403, Node404, Node405, Node406, Node407, Node408, Node409, Node41, Node410, Node411, Node412, Node413, Node414, Node415, Node416, Node417, Node418, Node419, Node42, Node420, Node421, Node422, Node423, Node424, Node425, Node426, Node427, Node428, Node43, Node44, Node45, Node46, Node47, Node48, Node49, Node5, Node50, Node51, Node52, Node53, Node533, Node535, Node538, Node539, Node54, Node542, Node545, Node546, Node548, Node55, Node551, Node552, Node554, Node557, Node558, Node56, Node561, Node564, Node565, Node566, Node57, Node570, Node572, Node575, Node577, Node58, Node59, Node591, Node599, Node6, Node60, Node602, Node605, Node606, Node607, Node608, Node609, Node61, Node610, Node611, Node615, Node616, Node619, Node62, Node622, Node623, Node626, Node629, Node63, Node632, Node633, Node634, Node635, Node638, Node639, Node64, Node645, Node648, Node649, Node65, Node654, Node657, Node658, Node66, Node662, Node663, Node666, Node667, Node67, Node671, Node672, Node674, Node675, Node676, Node677, Node679, Node68, Node682, Node685, Node686, Node687, Node69, Node693, Node696, Node697, Node7, Node70, Node701, Node702, Node703, Node704, Node709, Node71, Node710, Node716, Node717, Node718, Node719, Node72, Node722, Node724, Node73, Node735, Node736, Node739, Node74, Node741, Node75, Node752, Node753, Node76, Node761, Node762, Node77, Node78, Node79, Node8, Node80, Node81, Node82, Node83, Node84, Node85, Node86, Node87, Node88, Node89, Node9, Node90, Node91, Node92, Node93, Node94, Node95, Node96, Node97, Node98, Node99`
+* Log(L) = -6149.01, AIC-c = 14101.45 (901 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.124
+* Tree length (expected substitutions/site) for partition 1 :    0.124
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|      331       |       1        |        0.998   |       20.576   |       Pos. posterior = 0.9910       |
+|      332       |       1        |        1.041   |       17.008   |       Pos. posterior = 0.9850       |
+|      346       |       1        |        1.106   |       11.126   |       Pos. posterior = 0.9564       |
+|      347       |       1        |        0.742   |        8.924   |       Pos. posterior = 0.9636       |
+|      418       |       1        |        0.731   |       12.278   |       Pos. posterior = 0.9874       |
+|      424       |       1        |        1.602   |       14.126   |       Pos. posterior = 0.9580       |
+|      459       |       1        |        1.167   |       23.501   |       Pos. posterior = 0.9893       |
+|      485       |       1        |        0.792   |       11.833   |       Pos. posterior = 0.9743       |
+|      597       |       1        |        0.921   |       12.343   |       Pos. posterior = 0.9783       |
+|      605       |       1        |        1.069   |       14.803   |       Pos. posterior = 0.9782       |
+|      625       |       1        |        0.790   |       17.478   |       Pos. posterior = 0.9937       |
+|      647       |       1        |        1.252   |       18.753   |       Pos. posterior = 0.9809       |
+|      706       |       1        |        0.716   |        9.165   |       Pos. posterior = 0.9669       |
+----
+## FUBAR inferred 13 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.30 are expected to be false positives (95% confidence interval of 0-2 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.aln.treefile
+
+>Loaded a multiple sequence alignment with **36** sequences, **864** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1008.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 7 zero-length internal branches: `Node11, Node13, Node20, Node32, Node40, Node42, Node65`
+* Log(L) = -5080.98, AIC-c = 10316.09 (77 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.077
+* Tree length (expected substitutions/site) for partition 1 :    0.077
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       61       |       1        |       14.052   |       46.162   |       Pos. posterior = 0.9023       |
+|       83       |       1        |        1.382   |       38.563   |       Pos. posterior = 0.9962       |
+|      146       |       1        |        1.580   |       38.331   |       Pos. posterior = 0.9939       |
+|      151       |       1        |        1.700   |       18.579   |       Pos. posterior = 0.9596       |
+|      229       |       1        |        1.129   |       19.689   |       Pos. posterior = 0.9796       |
+|      290       |       1        |        1.812   |       24.959   |       Pos. posterior = 0.9747       |
+|      340       |       1        |        1.329   |       22.561   |       Pos. posterior = 0.9830       |
+|      403       |       1        |        1.705   |       18.850   |       Pos. posterior = 0.9602       |
+|      409       |       1        |        1.913   |       46.374   |       Pos. posterior = 0.9955       |
+|      411       |       1        |        2.770   |       19.421   |       Pos. posterior = 0.9322       |
+|      413       |       1        |        1.934   |       32.332   |       Pos. posterior = 0.9834       |
+|      467       |       1        |        1.148   |       27.622   |       Pos. posterior = 0.9931       |
+|      516       |       1        |        1.101   |       17.371   |       Pos. posterior = 0.9494       |
+|      751       |       1        |        1.671   |       29.978   |       Pos. posterior = 0.9856       |
+|      755       |       1        |        1.424   |       14.113   |       Pos. posterior = 0.9207       |
+|      771       |       1        |        0.828   |       20.498   |       Pos. posterior = 0.9699       |
+|      823       |       1        |        1.209   |       13.291   |       Pos. posterior = 0.9234       |
+----
+## FUBAR inferred 17 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.60 are expected to be false positives (95% confidence interval of 0-2 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 8 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.aln.treefile
+
+>Loaded a multiple sequence alignment with **177** sequences, **890** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1009.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 39 zero-length internal branches: `Node101, Node118, Node159, Node16, Node173, Node18, Node200, Node215, Node224, Node23, Node231, Node238, Node240, Node244, Node245, Node26, Node268, Node282, Node285, Node290, Node291, Node292, Node293, Node294, Node295, Node299, Node300, Node301, Node302, Node309, Node321, Node322, Node347, Node40, Node71, Node74, Node93, Node94, Node95`
+* Log(L) = -13668.79, AIC-c = 28056.13 (359 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.514
+* Tree length (expected substitutions/site) for partition 1 :    0.514
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       5        |       1        |        0.471   |        2.222   |       Pos. posterior = 0.9140       |
+|      133       |       1        |        0.633   |       19.745   |       Pos. posterior = 0.9997       |
+|      138       |       1        |       10.327   |       45.359   |       Pos. posterior = 0.9705       |
+|      140       |       1        |        1.012   |        6.255   |       Pos. posterior = 0.9465       |
+|      142       |       1        |        1.190   |        7.790   |       Pos. posterior = 0.9613       |
+|      146       |       1        |        1.706   |       18.847   |       Pos. posterior = 0.9653       |
+|      147       |       1        |        0.727   |       13.953   |       Pos. posterior = 0.9958       |
+|      150       |       1        |        0.630   |        6.793   |       Pos. posterior = 0.9913       |
+|      152       |       1        |        0.600   |        6.552   |       Pos. posterior = 0.9920       |
+|      165       |       1        |        1.074   |        5.633   |       Pos. posterior = 0.9244       |
+|      167       |       1        |        0.596   |        3.388   |       Pos. posterior = 0.9248       |
+|      169       |       1        |        0.690   |        7.026   |       Pos. posterior = 0.9878       |
+|      171       |       1        |        0.613   |        7.649   |       Pos. posterior = 0.9952       |
+|      208       |       1        |        0.917   |        8.010   |       Pos. posterior = 0.9716       |
+|      211       |       1        |        0.870   |        7.014   |       Pos. posterior = 0.9708       |
+|      217       |       1        |        1.191   |        6.334   |       Pos. posterior = 0.9369       |
+|      275       |       1        |        1.713   |       29.944   |       Pos. posterior = 1.0000       |
+|      315       |       1        |        0.648   |       29.312   |       Pos. posterior = 1.0000       |
+|      316       |       1        |        1.106   |        5.509   |       Pos. posterior = 0.9321       |
+|      328       |       1        |        0.659   |        8.587   |       Pos. posterior = 0.9927       |
+|      343       |       1        |        0.609   |        6.691   |       Pos. posterior = 0.9925       |
+|      393       |       1        |        0.594   |       12.829   |       Pos. posterior = 0.9985       |
+|      409       |       1        |        0.601   |       29.724   |       Pos. posterior = 1.0000       |
+|      410       |       1        |        1.338   |        6.427   |       Pos. posterior = 0.9445       |
+|      485       |       1        |        0.683   |        5.552   |       Pos. posterior = 0.9741       |
+|      490       |       1        |        5.428   |       49.993   |       Pos. posterior = 1.0000       |
+|      495       |       1        |        1.761   |       13.325   |       Pos. posterior = 0.9713       |
+|      496       |       1        |        0.694   |       35.501   |       Pos. posterior = 1.0000       |
+|      497       |       1        |        1.874   |       24.001   |       Pos. posterior = 0.9997       |
+|      518       |       1        |        0.621   |       10.800   |       Pos. posterior = 0.9965       |
+|      674       |       1        |        0.701   |       14.620   |       Pos. posterior = 0.9980       |
+|      678       |       1        |        2.634   |       37.590   |       Pos. posterior = 0.9987       |
+|      708       |       1        |        0.704   |       49.990   |       Pos. posterior = 1.0000       |
+|      736       |       1        |        0.824   |       14.716   |       Pos. posterior = 0.9952       |
+|      826       |       1        |        0.585   |       16.675   |       Pos. posterior = 0.9999       |
+|      869       |       1        |        0.625   |       11.858   |       Pos. posterior = 0.9971       |
+----
+## FUBAR inferred 36 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.76 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 30 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.aln.treefile
+
+>Loaded a multiple sequence alignment with **401** sequences, **862** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1010.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 135 zero-length internal branches: `Node102, Node136, Node148, Node15, Node169, Node171, Node187, Node200, Node201, Node202, Node205, Node206, Node226, Node227, Node228, Node229, Node230, Node231, Node232, Node233, Node234, Node235, Node236, Node237, Node238, Node239, Node240, Node241, Node242, Node243, Node244, Node245, Node246, Node247, Node248, Node257, Node258, Node259, Node260, Node261, Node262, Node263, Node264, Node266, Node267, Node268, Node270, Node271, Node274, Node276, Node277, Node278, Node279, Node285, Node3, Node301, Node336, Node346, Node347, Node354, Node373, Node376, Node377, Node378, Node379, Node402, Node403, Node405, Node406, Node409, Node415, Node5, Node585, Node586, Node6, Node603, Node609, Node618, Node629, Node630, Node631, Node632, Node633, Node634, Node635, Node636, Node637, Node638, Node639, Node640, Node641, Node642, Node643, Node644, Node645, Node660, Node661, Node663, Node664, Node667, Node668, Node67, Node672, Node673, Node674, Node678, Node681, Node682, Node683, Node686, Node693, Node694, Node696, Node697, Node7, Node704, Node705, Node706, Node707, Node716, Node719, Node720, Node721, Node726, Node727, Node731, Node734, Node741, Node750, Node766, Node767, Node771, Node78, Node79, Node9`
+* Log(L) = -36159.20, AIC-c = 73933.67 (807 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  1.826
+* Tree length (expected substitutions/site) for partition 1 :    1.826
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       4        |       1        |        0.305   |        4.829   |       Pos. posterior = 0.9994       |
+|       6        |       1        |        0.291   |        2.052   |       Pos. posterior = 0.9856       |
+|       13       |       1        |        0.335   |        7.465   |       Pos. posterior = 1.0000       |
+|       19       |       1        |        0.414   |        2.917   |       Pos. posterior = 0.9920       |
+|       46       |       1        |        0.967   |       15.502   |       Pos. posterior = 1.0000       |
+|       82       |       1        |        0.324   |        7.125   |       Pos. posterior = 1.0000       |
+|      127       |       1        |        0.540   |        2.743   |       Pos. posterior = 0.9651       |
+|      129       |       1        |        0.385   |       15.512   |       Pos. posterior = 1.0000       |
+|      135       |       1        |        0.450   |       15.519   |       Pos. posterior = 1.0000       |
+|      137       |       1        |        0.516   |       15.537   |       Pos. posterior = 1.0000       |
+|      139       |       1        |        0.397   |        7.125   |       Pos. posterior = 0.9997       |
+|      141       |       1        |        0.468   |       11.249   |       Pos. posterior = 1.0000       |
+|      144       |       1        |        0.363   |        7.167   |       Pos. posterior = 0.9999       |
+|      146       |       1        |        0.819   |        7.128   |       Pos. posterior = 0.9993       |
+|      159       |       1        |        0.421   |        2.615   |       Pos. posterior = 0.9856       |
+|      178       |       1        |        0.674   |        2.821   |       Pos. posterior = 0.9713       |
+|      183       |       1        |        0.884   |        3.549   |       Pos. posterior = 0.9095       |
+|      184       |       1        |        0.418   |        3.018   |       Pos. posterior = 0.9917       |
+|      186       |       1        |        0.482   |        2.873   |       Pos. posterior = 0.9802       |
+|      188       |       1        |        0.689   |        7.153   |       Pos. posterior = 0.9984       |
+|      193       |       1        |        0.705   |        8.029   |       Pos. posterior = 0.9743       |
+|      241       |       1        |        0.603   |       29.368   |       Pos. posterior = 1.0000       |
+|      245       |       1        |        0.571   |        2.861   |       Pos. posterior = 0.9926       |
+|      300       |       1        |        0.318   |        6.971   |       Pos. posterior = 0.9999       |
+|      312       |       1        |        0.326   |       15.523   |       Pos. posterior = 1.0000       |
+|      337       |       1        |        0.423   |        2.464   |       Pos. posterior = 0.9794       |
+|      339       |       1        |        0.352   |        7.171   |       Pos. posterior = 1.0000       |
+|      349       |       1        |        0.371   |       14.362   |       Pos. posterior = 1.0000       |
+|      356       |       1        |        0.401   |        1.672   |       Pos. posterior = 0.9462       |
+|      398       |       1        |        0.384   |       14.436   |       Pos. posterior = 1.0000       |
+|      402       |       1        |        0.493   |        7.057   |       Pos. posterior = 0.9946       |
+|      408       |       1        |        6.878   |       15.498   |       Pos. posterior = 0.9970       |
+|      409       |       1        |        8.756   |       29.132   |       Pos. posterior = 0.9898       |
+|      410       |       1        |        0.387   |       15.518   |       Pos. posterior = 1.0000       |
+|      411       |       1        |        0.641   |       12.077   |       Pos. posterior = 0.9999       |
+|      413       |       1        |        0.841   |       18.821   |       Pos. posterior = 0.9953       |
+|      416       |       1        |        0.428   |        2.846   |       Pos. posterior = 0.9901       |
+|      444       |       1        |        0.377   |        4.555   |       Pos. posterior = 0.9962       |
+|      446       |       1        |        0.360   |        6.561   |       Pos. posterior = 0.9989       |
+|      450       |       1        |        0.587   |       15.114   |       Pos. posterior = 1.0000       |
+|      467       |       1        |        3.079   |       12.765   |       Pos. posterior = 0.9212       |
+|      469       |       1        |        2.446   |       18.341   |       Pos. posterior = 0.9405       |
+|      473       |       1        |        0.527   |       14.050   |       Pos. posterior = 1.0000       |
+|      594       |       1        |        0.497   |       15.141   |       Pos. posterior = 1.0000       |
+|      618       |       1        |        0.480   |        2.835   |       Pos. posterior = 0.9803       |
+|      623       |       1        |        0.363   |       15.513   |       Pos. posterior = 1.0000       |
+|      646       |       1        |        2.909   |       15.519   |       Pos. posterior = 1.0000       |
+|      647       |       1        |        0.606   |        2.981   |       Pos. posterior = 0.9745       |
+|      650       |       1        |        0.578   |        7.610   |       Pos. posterior = 1.0000       |
+|      673       |       1        |        0.389   |        7.125   |       Pos. posterior = 0.9999       |
+|      680       |       1        |        0.446   |       15.511   |       Pos. posterior = 1.0000       |
+|      682       |       1        |        0.576   |        7.134   |       Pos. posterior = 0.9999       |
+|      727       |       1        |        0.271   |        7.085   |       Pos. posterior = 1.0000       |
+|      729       |       1        |        0.655   |        6.427   |       Pos. posterior = 0.9909       |
+|      752       |       1        |        0.361   |        1.978   |       Pos. posterior = 0.9713       |
+|      758       |       1        |        0.334   |        2.517   |       Pos. posterior = 0.9831       |
+|      768       |       1        |        0.402   |        1.746   |       Pos. posterior = 0.9540       |
+|      798       |       1        |        0.286   |       15.521   |       Pos. posterior = 1.0000       |
+|      818       |       1        |        0.414   |        2.776   |       Pos. posterior = 0.9907       |
+|      836       |       1        |        0.438   |        7.121   |       Pos. posterior = 0.9985       |
+|      839       |       1        |        0.567   |        2.390   |       Pos. posterior = 0.9405       |
+|      841       |       1        |        0.961   |       15.549   |       Pos. posterior = 1.0000       |
+|      842       |       1        |        0.380   |       15.517   |       Pos. posterior = 1.0000       |
+|      845       |       1        |        0.692   |        3.886   |       Pos. posterior = 0.9612       |
+|      851       |       1        |        0.334   |       12.733   |       Pos. posterior = 1.0000       |
+|      857       |       1        |        5.908   |       15.510   |       Pos. posterior = 0.9988       |
+----
+## FUBAR inferred 66 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.76 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 6 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.aln.treefile
+
+>Loaded a multiple sequence alignment with **515** sequences, **890** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1011.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 199 zero-length internal branches: `Node1006, Node1014, Node110, Node111, Node113, Node12, Node121, Node125, Node128, Node129, Node130, Node133, Node134, Node135, Node137, Node138, Node139, Node14, Node140, Node147, Node152, Node17, Node172, Node173, Node182, Node189, Node19, Node191, Node194, Node195, Node2, Node20, Node202, Node205, Node21, Node215, Node221, Node222, Node224, Node225, Node234, Node24, Node256, Node268, Node279, Node28, Node280, Node29, Node292, Node293, Node306, Node307, Node313, Node318, Node320, Node324, Node328, Node335, Node343, Node353, Node357, Node368, Node37, Node370, Node377, Node38, Node382, Node384, Node386, Node39, Node392, Node393, Node395, Node397, Node4, Node406, Node41, Node410, Node414, Node416, Node417, Node418, Node435, Node445, Node468, Node481, Node494, Node499, Node5, Node506, Node510, Node511, Node514, Node515, Node520, Node521, Node522, Node524, Node542, Node547, Node548, Node549, Node551, Node554, Node555, Node556, Node557, Node56, Node57, Node575, Node576, Node577, Node579, Node580, Node586, Node587, Node590, Node594, Node597, Node598, Node6, Node609, Node614, Node618, Node62, Node620, Node622, Node623, Node625, Node627, Node636, Node637, Node639, Node642, Node646, Node648, Node652, Node653, Node656, Node665, Node666, Node699, Node7, Node70, Node700, Node703, Node704, Node706, Node71, Node710, Node717, Node723, Node725, Node732, Node736, Node74, Node744, Node76, Node768, Node780, Node782, Node784, Node798, Node803, Node813, Node814, Node815, Node824, Node826, Node835, Node847, Node848, Node850, Node851, Node852, Node853, Node855, Node867, Node872, Node873, Node874, Node876, Node892, Node893, Node90, Node909, Node91, Node913, Node936, Node938, Node942, Node947, Node96, Node961, Node963, Node984, Node987, Node99, Node998`
+* Log(L) = -24341.81, AIC-c = 50755.17 (1035 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  1.089
+* Tree length (expected substitutions/site) for partition 1 :    1.089
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.857
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       10       |       1        |        0.532   |        2.683   |       Pos. posterior = 0.9747       |
+|       30       |       1        |        0.655   |        4.011   |       Pos. posterior = 0.9639       |
+|       31       |       1        |        0.564   |        3.413   |       Pos. posterior = 0.9747       |
+|       90       |       1        |        1.092   |        4.845   |       Pos. posterior = 0.9196       |
+|       95       |       1        |        5.957   |       29.406   |       Pos. posterior = 0.9999       |
+|      136       |       1        |        0.563   |        6.985   |       Pos. posterior = 0.9968       |
+|      137       |       1        |        1.132   |        7.113   |       Pos. posterior = 0.9718       |
+|      138       |       1        |       10.335   |       38.788   |       Pos. posterior = 0.9975       |
+|      140       |       1        |        1.805   |       13.223   |       Pos. posterior = 0.9463       |
+|      141       |       1        |        5.071   |       33.116   |       Pos. posterior = 0.9998       |
+|      142       |       1        |        3.784   |       22.745   |       Pos. posterior = 0.9260       |
+|      150       |       1        |        0.542   |        6.956   |       Pos. posterior = 0.9975       |
+|      157       |       1        |        1.119   |       16.476   |       Pos. posterior = 0.9999       |
+|      173       |       1        |        0.459   |        3.601   |       Pos. posterior = 0.9944       |
+|      182       |       1        |        1.156   |       15.884   |       Pos. posterior = 0.9998       |
+|      237       |       1        |        0.437   |        5.914   |       Pos. posterior = 0.9985       |
+|      242       |       1        |        1.327   |        7.969   |       Pos. posterior = 0.9767       |
+|      243       |       1        |        1.527   |        6.927   |       Pos. posterior = 0.9469       |
+|      247       |       1        |        0.615   |        3.624   |       Pos. posterior = 0.9706       |
+|      323       |       1        |        0.543   |        6.700   |       Pos. posterior = 0.9963       |
+|      334       |       1        |        2.353   |       15.802   |       Pos. posterior = 0.9947       |
+|      368       |       1        |        2.618   |       21.231   |       Pos. posterior = 0.9983       |
+|      370       |       1        |        1.242   |       17.046   |       Pos. posterior = 0.9996       |
+|      380       |       1        |        0.981   |       15.621   |       Pos. posterior = 1.0000       |
+|      425       |       1        |        0.871   |        7.131   |       Pos. posterior = 0.9944       |
+|      428       |       1        |        1.035   |       24.823   |       Pos. posterior = 1.0000       |
+|      430       |       1        |        0.556   |        3.264   |       Pos. posterior = 0.9802       |
+|      431       |       1        |        0.440   |       24.614   |       Pos. posterior = 1.0000       |
+|      432       |       1        |        0.893   |        9.016   |       Pos. posterior = 0.9923       |
+|      439       |       1        |        0.582   |        4.020   |       Pos. posterior = 0.9800       |
+|      442       |       1        |        0.861   |        5.099   |       Pos. posterior = 0.9304       |
+|      461       |       1        |        0.557   |        5.635   |       Pos. posterior = 0.9906       |
+|      473       |       1        |        0.584   |        4.963   |       Pos. posterior = 0.9844       |
+|      481       |       1        |        0.401   |        2.378   |       Pos. posterior = 0.9474       |
+|      527       |       1        |        0.451   |        7.723   |       Pos. posterior = 0.9997       |
+|      542       |       1        |        0.546   |       35.912   |       Pos. posterior = 1.0000       |
+|      657       |       1        |        0.638   |        3.729   |       Pos. posterior = 0.9695       |
+|      666       |       1        |        1.052   |        7.293   |       Pos. posterior = 0.9807       |
+|      865       |       1        |        0.953   |       50.000   |       Pos. posterior = 1.0000       |
+|      866       |       1        |        1.889   |       50.000   |       Pos. posterior = 1.0000       |
+|      869       |       1        |        0.492   |        7.124   |       Pos. posterior = 0.9996       |
+|      872       |       1        |        0.918   |        3.014   |       Pos. posterior = 0.9167       |
+----
+## FUBAR inferred 42 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.79 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 7 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.aln.treefile
+
+>Loaded a multiple sequence alignment with **306** sequences, **887** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1015.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 49 zero-length internal branches: `Node142, Node144, Node182, Node183, Node186, Node187, Node19, Node198, Node201, Node207, Node208, Node226, Node228, Node229, Node230, Node232, Node234, Node238, Node246, Node281, Node300, Node301, Node340, Node349, Node35, Node351, Node36, Node37, Node40, Node41, Node43, Node44, Node45, Node453, Node469, Node471, Node48, Node484, Node53, Node550, Node58, Node586, Node587, Node60, Node61, Node79, Node91, Node93, Node96`
+* Log(L) = -33423.72, AIC-c = 68082.39 (617 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  1.631
+* Tree length (expected substitutions/site) for partition 1 :    1.631
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.714
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       44       |       1        |        0.466   |        2.764   |       Pos. posterior = 0.9718       |
+|       77       |       1        |        0.427   |        1.738   |       Pos. posterior = 0.9310       |
+|       84       |       1        |        4.186   |       41.491   |       Pos. posterior = 1.0000       |
+|      132       |       1        |        0.485   |        3.639   |       Pos. posterior = 0.9492       |
+|      135       |       1        |        0.615   |        7.127   |       Pos. posterior = 0.9999       |
+|      144       |       1        |        0.317   |       15.536   |       Pos. posterior = 1.0000       |
+|      147       |       1        |        0.629   |        2.783   |       Pos. posterior = 0.9288       |
+|      153       |       1        |        0.508   |        2.538   |       Pos. posterior = 0.9261       |
+|      154       |       1        |        0.586   |        3.123   |       Pos. posterior = 0.9431       |
+|      155       |       1        |        0.853   |        7.121   |       Pos. posterior = 0.9994       |
+|      156       |       1        |        0.420   |        1.571   |       Pos. posterior = 0.9159       |
+|      182       |       1        |        0.452   |        1.763   |       Pos. posterior = 0.9184       |
+|      184       |       1        |        0.349   |        7.155   |       Pos. posterior = 1.0000       |
+|      187       |       1        |        0.354   |        1.262   |       Pos. posterior = 0.9089       |
+|      188       |       1        |        0.343   |        5.791   |       Pos. posterior = 0.9970       |
+|      191       |       1        |        0.550   |        2.642   |       Pos. posterior = 0.9454       |
+|      193       |       1        |        0.477   |        1.643   |       Pos. posterior = 0.9008       |
+|      194       |       1        |        0.360   |        7.229   |       Pos. posterior = 0.9999       |
+|      200       |       1        |        0.393   |        6.089   |       Pos. posterior = 0.9940       |
+|      320       |       1        |        0.423   |        1.796   |       Pos. posterior = 0.9305       |
+|      344       |       1        |        0.406   |        2.500   |       Pos. posterior = 0.9747       |
+|      345       |       1        |        0.361   |        5.741   |       Pos. posterior = 0.9956       |
+|      347       |       1        |        1.162   |        6.256   |       Pos. posterior = 0.9261       |
+|      349       |       1        |        0.419   |        7.120   |       Pos. posterior = 0.9993       |
+|      350       |       1        |        0.334   |        2.385   |       Pos. posterior = 0.9844       |
+|      353       |       1        |        0.372   |       11.387   |       Pos. posterior = 0.9999       |
+|      354       |       1        |        0.330   |        2.756   |       Pos. posterior = 0.9926       |
+|      357       |       1        |        0.427   |        1.801   |       Pos. posterior = 0.9295       |
+|      361       |       1        |        0.444   |        2.448   |       Pos. posterior = 0.9651       |
+|      364       |       1        |        0.375   |        2.788   |       Pos. posterior = 0.9904       |
+|      366       |       1        |        0.366   |        7.393   |       Pos. posterior = 0.9999       |
+|      372       |       1        |        0.371   |        7.110   |       Pos. posterior = 0.9998       |
+|      397       |       1        |        0.379   |        2.904   |       Pos. posterior = 0.9902       |
+|      402       |       1        |        0.550   |        2.855   |       Pos. posterior = 0.9516       |
+|      416       |       1        |        0.747   |       14.952   |       Pos. posterior = 0.9971       |
+|      417       |       1        |        0.645   |        4.197   |       Pos. posterior = 0.9265       |
+|      419       |       1        |        7.403   |       15.486   |       Pos. posterior = 0.9598       |
+|      421       |       1        |        0.621   |        8.912   |       Pos. posterior = 0.9907       |
+|      423       |       1        |        0.439   |        7.107   |       Pos. posterior = 0.9987       |
+|      424       |       1        |        0.412   |        1.989   |       Pos. posterior = 0.9459       |
+|      427       |       1        |        0.967   |        7.237   |       Pos. posterior = 0.9982       |
+|      428       |       1        |        0.882   |        7.152   |       Pos. posterior = 0.9912       |
+|      429       |       1        |        0.682   |        5.813   |       Pos. posterior = 0.9490       |
+|      435       |       1        |        1.168   |       16.066   |       Pos. posterior = 0.9997       |
+|      438       |       1        |        1.051   |        6.318   |       Pos. posterior = 0.9461       |
+|      443       |       1        |        0.387   |        2.724   |       Pos. posterior = 0.9870       |
+|      478       |       1        |        0.359   |        1.272   |       Pos. posterior = 0.9075       |
+|      490       |       1        |        0.517   |        4.982   |       Pos. posterior = 0.9690       |
+|      512       |       1        |        0.420   |        1.527   |       Pos. posterior = 0.9127       |
+|      545       |       1        |        0.697   |        2.616   |       Pos. posterior = 0.9049       |
+|      613       |       1        |        0.220   |        7.235   |       Pos. posterior = 1.0000       |
+|      651       |       1        |        5.351   |       14.540   |       Pos. posterior = 0.9531       |
+|      652       |       1        |        7.171   |       15.542   |       Pos. posterior = 0.9271       |
+|      655       |       1        |        0.361   |        6.374   |       Pos. posterior = 0.9972       |
+|      672       |       1        |        0.307   |        7.286   |       Pos. posterior = 1.0000       |
+|      679       |       1        |        0.335   |       15.515   |       Pos. posterior = 1.0000       |
+|      705       |       1        |        0.316   |       14.693   |       Pos. posterior = 1.0000       |
+|      707       |       1        |        0.316   |        7.982   |       Pos. posterior = 1.0000       |
+|      718       |       1        |        0.713   |        7.126   |       Pos. posterior = 0.9798       |
+|      751       |       1        |        0.288   |       15.528   |       Pos. posterior = 1.0000       |
+|      752       |       1        |        0.365   |        7.162   |       Pos. posterior = 0.9999       |
+|      754       |       1        |        0.302   |        7.080   |       Pos. posterior = 0.9999       |
+|      774       |       1        |        0.373   |        6.799   |       Pos. posterior = 0.9982       |
+|      775       |       1        |        0.274   |       15.528   |       Pos. posterior = 1.0000       |
+|      778       |       1        |        0.254   |       15.479   |       Pos. posterior = 1.0000       |
+|      795       |       1        |        0.372   |        7.378   |       Pos. posterior = 0.9999       |
+|      813       |       1        |        0.237   |       15.520   |       Pos. posterior = 1.0000       |
+|      829       |       1        |        0.395   |       15.595   |       Pos. posterior = 1.0000       |
+|      848       |       1        |        0.334   |        1.179   |       Pos. posterior = 0.9112       |
+|      867       |       1        |        0.743   |       28.890   |       Pos. posterior = 1.0000       |
+----
+## FUBAR inferred 70 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  1.99 are expected to be false positives (95% confidence interval of 0-5 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 1 duplicate sequence. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.aln.treefile
+
+>Loaded a multiple sequence alignment with **65** sequences, **869** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1016.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 6 zero-length internal branches: `Node104, Node125, Node26, Node4, Node55, Node82`
+* Log(L) = -8027.19, AIC-c = 16324.59 (135 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.232
+* Tree length (expected substitutions/site) for partition 1 :    0.232
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  1.000
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       16       |       1        |        0.618   |        5.988   |       Pos. posterior = 0.9504       |
+|      138       |       1        |        1.182   |       23.577   |       Pos. posterior = 0.9898       |
+|      145       |       1        |        0.866   |        9.172   |       Pos. posterior = 0.9763       |
+|      147       |       1        |        1.961   |       11.192   |       Pos. posterior = 0.9292       |
+|      149       |       1        |        0.772   |        8.173   |       Pos. posterior = 0.9741       |
+|      163       |       1        |        0.735   |        7.381   |       Pos. posterior = 0.9721       |
+|      167       |       1        |        0.690   |        4.940   |       Pos. posterior = 0.9203       |
+|      177       |       1        |        0.941   |        8.252   |       Pos. posterior = 0.9669       |
+|      190       |       1        |        0.699   |        7.265   |       Pos. posterior = 0.9743       |
+|      193       |       1        |        0.643   |       14.204   |       Pos. posterior = 0.9966       |
+|      197       |       1        |        0.770   |        5.409   |       Pos. posterior = 0.9234       |
+|      214       |       1        |        0.600   |        4.717   |       Pos. posterior = 0.9260       |
+|      319       |       1        |        0.583   |       11.727   |       Pos. posterior = 0.9971       |
+|      334       |       1        |        0.928   |        7.799   |       Pos. posterior = 0.9655       |
+|      338       |       1        |        0.956   |        6.420   |       Pos. posterior = 0.9460       |
+|      349       |       1        |        0.671   |       11.217   |       Pos. posterior = 0.9926       |
+|      356       |       1        |        0.675   |        4.780   |       Pos. posterior = 0.9178       |
+|      359       |       1        |        0.622   |       11.190   |       Pos. posterior = 0.9949       |
+|      401       |       1        |        0.553   |        8.873   |       Pos. posterior = 0.9835       |
+|      414       |       1        |        0.648   |        7.427   |       Pos. posterior = 0.9799       |
+|      418       |       1        |        0.750   |       11.131   |       Pos. posterior = 0.9885       |
+|      419       |       1        |        1.014   |       19.568   |       Pos. posterior = 0.9915       |
+|      421       |       1        |        0.731   |       26.360   |       Pos. posterior = 0.9991       |
+|      422       |       1        |        0.670   |       10.683   |       Pos. posterior = 0.9919       |
+|      423       |       1        |        0.730   |        6.125   |       Pos. posterior = 0.9595       |
+|      424       |       1        |        1.040   |       15.080   |       Pos. posterior = 0.9843       |
+|      426       |       1        |        0.975   |        9.673   |       Pos. posterior = 0.9720       |
+|      428       |       1        |        0.663   |        7.805   |       Pos. posterior = 0.9808       |
+|      430       |       1        |        0.685   |        6.921   |       Pos. posterior = 0.9727       |
+|      453       |       1        |        0.654   |       11.687   |       Pos. posterior = 0.9941       |
+|      474       |       1        |        0.960   |        6.368   |       Pos. posterior = 0.9451       |
+|      476       |       1        |        0.778   |       11.451   |       Pos. posterior = 0.9882       |
+|      477       |       1        |        0.739   |       47.331   |       Pos. posterior = 1.0000       |
+|      513       |       1        |        0.563   |       10.711   |       Pos. posterior = 0.9970       |
+|      660       |       1        |        0.704   |       15.203   |       Pos. posterior = 0.9963       |
+|      664       |       1        |        0.726   |        7.387   |       Pos. posterior = 0.9778       |
+|      844       |       1        |        0.862   |       49.995   |       Pos. posterior = 0.9999       |
+|      848       |       1        |        0.702   |       31.730   |       Pos. posterior = 0.9997       |
+----
+## FUBAR inferred 38 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.98 are expected to be false positives (95% confidence interval of 0-3 )
+
+Analysis Description
+--------------------
+Perform a Fast Unbiased AppRoximate Bayesian (FUBAR) analysis of a
+coding sequence alignment to determine whether some sites have been
+subject to pervasive purifying or diversifying selection. v2.1
+introduces two more methods for estimating the posterior distribution of
+grid weights: collapsed Gibbs MCMC (faster) and 0-th order Variation
+Bayes approximation (fastest). Please note that a FUBAR analysis
+generates a cache and a results JSON file in the same directory as
+directory as the original alignment. HyPhy needs to have write
+privileges to this directory. For example if the original file is in
+/home/sergei/FUBAR/data/pol.nex then at the end of a FUBAR run, there
+will also exist FUBAR-generated files
+/home/sergei/FUBAR/data/pol.nex.FUBAR.json,
+/home/sergei/FUBAR/data/pol.nex.fubrar.cache. They also provide
+checkpointing so that a partially completed analysis can be restarted.
+
+- __Requirements__: in-frame codon alignment (possibly partitioned) and a phylogenetic tree
+(one per partition)
+
+- __Citation__: FUBAR: a fast, unconstrained bayesian approximation for inferring
+selection (2013), Mol Biol Evol. 30(5):1196-205
+
+- __Written by__: Sergei L Kosakovsky Pond
+
+- __Contact Information__: spond@temple.edu
+
+- __Analysis Version__: 2.2
+
+
+>code –> Universal
+
+-------
+>[WARNING] This dataset contains 18 duplicate sequences. Identical
+sequences do not contribute any information to the analysis and only
+slow down computation. Please consider removing duplicate or 'nearly'
+duplicate sequences, e.g. using
+https://github.com/veg/hyphy-analyses/tree/master/remove-duplicates
+prior to running selection analyses
+-------
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.aln.treefile
+/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.aln.treefile
+
+>Loaded a multiple sequence alignment with **240** sequences, **854** codons, and **1** partitions from `/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.aln`
+Save FUBAR cache to : 
+>cache –> /hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.aln.FUBAR.cache
+> FUBAR will write cache and result files to _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.aln.FUBAR.cache_ and _/hpcdata/vrc_vpds/millerkrs/pos_selection_subpopulation_structure_analysis/data/mexico/cell3_bc1017.aln.FUBAR.json_, respectively 
+
+
+> Number of grid points per dimension (total number is D^2) (permissible range = [5,50], default value = 20, integer): 
+>grid –> 20
+
+>method –> Variational-Bayes
+> The concentration parameter of the Dirichlet prior (permissible range = [0.001,1], default value = 0.5): 
+>concentration_parameter –> 0.5
+
+>non-zero –> No
+
+
+### Obtaining branch lengths and nucleotide substitution biases under the nucleotide GTR model
+
+>kill-zero-lengths –> Yes
+
+### Deleted 63 zero-length internal branches: `Node10, Node127, Node145, Node156, Node16, Node164, Node165, Node166, Node167, Node168, Node169, Node17, Node172, Node175, Node187, Node190, Node191, Node192, Node193, Node194, Node195, Node196, Node197, Node198, Node199, Node200, Node21, Node213, Node215, Node216, Node217, Node218, Node226, Node231, Node234, Node31, Node322, Node331, Node332, Node346, Node348, Node349, Node35, Node353, Node356, Node36, Node379, Node394, Node4, Node429, Node431, Node432, Node433, Node434, Node438, Node439, Node440, Node5, Node50, Node52, Node79, Node8, Node9`
+* Log(L) = -18908.17, AIC-c = 38787.10 (485 estimated parameters)
+* 1 partition. Total tree length by partition (subs/site)  0.807
+* Tree length (expected substitutions/site) for partition 1 :    0.807
+
+### Computing the phylogenetic likelihood function on the grid 
+* Determining appropriate tree scaling based on the best score from a  20 x 20 rate grid
+* Best scaling achieved for 
+	* synonymous rate =  1.227
+	* non-synonymous rate =  0.714
+* Computing conditional site likelihoods on a 20 x 20 rate grid
+
+### Running an iterative zeroth order variational Bayes procedure to estimate the posterior mean of rate weights
+* Using the following settings
+	* Dirichlet alpha  : 0.5
+
+### Tabulating site-level results
+|     Codon      |   Partition    |     alpha      |      beta      |Posterior prob for positive selection|
+|:--------------:|:--------------:|:--------------:|:--------------:|:-----------------------------------:|
+|       2        |       1        |        0.456   |       19.896   |       Pos. posterior = 1.0000       |
+|       13       |       1        |        0.525   |        5.387   |       Pos. posterior = 0.9884       |
+|       28       |       1        |       28.602   |       50.000   |       Pos. posterior = 0.9505       |
+|       82       |       1        |        0.493   |       17.342   |       Pos. posterior = 1.0000       |
+|       84       |       1        |        0.474   |       15.672   |       Pos. posterior = 1.0000       |
+|       89       |       1        |        1.435   |       14.419   |       Pos. posterior = 0.9781       |
+|      127       |       1        |        0.598   |        2.374   |       Pos. posterior = 0.9015       |
+|      130       |       1        |        0.562   |        7.222   |       Pos. posterior = 0.9975       |
+|      132       |       1        |        0.529   |       14.599   |       Pos. posterior = 0.9991       |
+|      134       |       1        |        0.571   |       12.782   |       Pos. posterior = 0.9972       |
+|      135       |       1        |        1.476   |        7.174   |       Pos. posterior = 0.9449       |
+|      140       |       1        |        0.960   |       20.507   |       Pos. posterior = 0.9997       |
+|      142       |       1        |        0.493   |       15.433   |       Pos. posterior = 0.9999       |
+|      150       |       1        |        0.451   |        6.896   |       Pos. posterior = 0.9994       |
+|      208       |       1        |        0.702   |        7.365   |       Pos. posterior = 0.9886       |
+|      231       |       1        |        0.597   |        7.012   |       Pos. posterior = 0.9948       |
+|      238       |       1        |        0.844   |       15.342   |       Pos. posterior = 0.9996       |
+|      240       |       1        |        0.686   |       49.970   |       Pos. posterior = 1.0000       |
+|      286       |       1        |        0.485   |        3.601   |       Pos. posterior = 0.9624       |
+|      317       |       1        |        0.489   |        4.120   |       Pos. posterior = 0.9782       |
+|      334       |       1        |        0.535   |        6.785   |       Pos. posterior = 0.9968       |
+|      335       |       1        |        0.520   |        7.039   |       Pos. posterior = 0.9985       |
+|      336       |       1        |        0.572   |        7.267   |       Pos. posterior = 0.9971       |
+|      350       |       1        |        0.521   |        7.025   |       Pos. posterior = 0.9981       |
+|      352       |       1        |        0.409   |        3.557   |       Pos. posterior = 0.9373       |
+|      402       |       1        |        0.970   |        5.219   |       Pos. posterior = 0.9142       |
+|      403       |       1        |        0.859   |        7.055   |       Pos. posterior = 0.9954       |
+|      404       |       1        |        0.577   |       14.961   |       Pos. posterior = 0.9972       |
+|      406       |       1        |        0.483   |        7.069   |       Pos. posterior = 0.9993       |
+|      418       |       1        |        0.703   |        6.919   |       Pos. posterior = 0.9863       |
+|      455       |       1        |        0.495   |       15.487   |       Pos. posterior = 0.9999       |
+|      622       |       1        |        0.575   |        2.565   |       Pos. posterior = 0.9149       |
+|      636       |       1        |        1.075   |        6.952   |       Pos. posterior = 0.9783       |
+|      642       |       1        |        0.467   |        6.870   |       Pos. posterior = 0.9991       |
+|      646       |       1        |        1.592   |        7.280   |       Pos. posterior = 0.9317       |
+|      675       |       1        |        0.459   |       15.432   |       Pos. posterior = 1.0000       |
+|      691       |       1        |        0.496   |        4.951   |       Pos. posterior = 0.9856       |
+|      745       |       1        |        0.433   |        4.985   |       Pos. posterior = 0.9793       |
+|      747       |       1        |        0.409   |       14.846   |       Pos. posterior = 1.0000       |
+|      753       |       1        |        0.426   |       12.917   |       Pos. posterior = 0.9999       |
+|      760       |       1        |        0.518   |        2.790   |       Pos. posterior = 0.9498       |
+|      790       |       1        |        0.776   |       28.822   |       Pos. posterior = 1.0000       |
+|      796       |       1        |        0.543   |       18.108   |       Pos. posterior = 0.9998       |
+|      818       |       1        |        0.516   |        7.969   |       Pos. posterior = 0.9990       |
+|      830       |       1        |        0.763   |        7.501   |       Pos. posterior = 0.9976       |
+|      832       |       1        |        0.654   |       29.009   |       Pos. posterior = 0.9968       |
+|      833       |       1        |        0.481   |       15.591   |       Pos. posterior = 1.0000       |
+|      849       |       1        |        0.618   |        9.601   |       Pos. posterior = 0.9944       |
+----
+## FUBAR inferred 48 sites subject to diversifying positive selection at posterior probability >= 0.9
+Of these,  0.77 are expected to be false positives (95% confidence interval of 0-3 )
