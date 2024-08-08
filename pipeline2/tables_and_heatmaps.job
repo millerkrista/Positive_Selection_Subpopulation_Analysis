@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# Job Name
+#$ -N tables_heatmaps.job
+
+# Execute the script from the current working directory
+#$ -cwd
+
+# Merge the output of the script (and any error messages generated) into one file
+#$ -j y
+
+# Send the output of the script to a directory called 'UGE-output' in the current working directory (cwd)
+#$ -o UGE-output/
+
+# Send mail when the job is submitted, and when the job completes
+#$ -m be
+
+#  Specify an email address to use
+#$ -M millerkrs@nih.gov
+
+
+# Load R
+echo "Loading R"
+module load R
+
+# Get midpoints where Tajimas D >= 1.5 for each participant
+echo "Getting significant Tajimas D midpoints"
+Rscript scripts/get_significant_midpoints.R
+
+# Unload R
+echo "Unloading R"
+module unload R
+
+
+# Load python
+echo "Loading Python"
+module load python
+
+# Make tables
+echo "Creating Tables"
+python3 scripts/create_dNdS_tables.py
+
+# Unload python
+echo "Unloading Python"
+module unload python
+
+
+# Load R
+echo "Loading R"
+module load R
+
+# Make Heatmaps
+echo "Making Heatmaps"
+Rscript scripts/make_dNdS_heatmaps.R
+
+# Unload R
+echo "Unloading R"
+module unload R
+
+
+echo "All Done!"

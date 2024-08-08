@@ -1,0 +1,36 @@
+Loading R
+Getting significant Tajimas D midpoints
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: ‘collections’
+
+The following object is masked from ‘package:utils’:
+
+    stack
+
+Unloading R
+Loading Python
+Creating Tables
+Unloading Python
+Loading R
+Making Heatmaps
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+✔ ggplot2 3.4.3     ✔ purrr   0.3.4
+✔ tibble  3.2.1     ✔ dplyr   1.1.2
+✔ tidyr   1.1.2     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+Unloading R
+All Done!
