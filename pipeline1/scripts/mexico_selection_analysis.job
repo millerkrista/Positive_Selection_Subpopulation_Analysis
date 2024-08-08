@@ -1,0 +1,88 @@
+#!/bin/sh
+
+# Job Name
+#$ -N mexico_selection
+
+# Execute the script from the current working directory
+#$ -cwd
+
+# Merge the output of the script (and any error messages generated) into one file
+#$ -j y
+
+# Send the output of the script to a directory called 'UGE-output' in the current working directory (cwd)
+#$ -o UGE-output/
+
+# Send mail when the job is submitted, and when the job completes
+#$ -m be
+
+#  Specify an email address to use
+#$ -M millerkrs@nih.gov
+
+
+# load Python
+module load python
+
+echo 'Simplifying FUBAR data'
+# Run the program to simplify FUBAR data
+python3 scripts/simplify_fubar_data.py -d data/mexico
+
+echo 'Getting consensus sequences'
+# Iterate through each alignment file in the directory
+for ALN in data/mexico/*.aln; do
+	# Run the program to get consensus sequences from alignment files
+    perl scripts/get_consensus_by_codon_mexico.pl $ALN
+
+done
+
+echo 'Translating consensus sequences'
+# Run the program to translate all the consensus sequences
+python3 scripts/translate_fasta_mexico.py -d data/mexico
+
+
+# Append consensus sequences into one file
+cat data/mexico/*.translated >> data/mexico/mexico_consensus_seqs.fa
+
+# Append HXB2 protein sequence to file with consensus sequences
+cat data/mexico/mexico_consensus_seqs.fa data/hxb2_aa.fa >> data/mexico/mexico_consensus_seqs_hxb2.fa
+
+# Unload Python
+module unload python
+
+
+# Load alignment software MAFFT
+module load mafft
+
+echo 'Aligning consensus protein sequences to HXB2'
+# Align translated consensus sequences with HXB2
+mafft data/mexico/mexico_consensus_seqs_hxb2.fa > results/mexico/mexico_hxb2_aln.fa
+
+# Unload MAFFT
+module unload mafft
+
+
+# Load Python
+module load python
+
+echo 'Getting codon position mappings from the alignment'
+# Get codon position mappings of HXB2 -> Aligned Consensus -> Original Consensus
+python3 scripts/get_position_mappings.py -c data/mexico/mexico_consensus_seqs.fa -a results/mexico/mexico_hxb2_aln.fa -d results/mexico/
+
+# Unload Python
+module unload python
+
+
+# Load R
+module load R
+
+echo "Getting annotations for consensus sequences"
+# Use output files to get annotations for consensus sequences
+Rscript scripts/get_annotation_for_consensus.R --args data/ results/mexico/
+
+# Unload R
+module unload R
+
+
+echo "All done!"
+
+
+
