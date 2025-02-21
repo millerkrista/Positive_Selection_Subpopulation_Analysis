@@ -45,6 +45,9 @@ This workflow also creates plots for each participant showing dN/dS and Tajima's
 Tools/Languages/Dependencies: Python, R
 
 This workflow takes as input the Tajima's D data we obtained in the preliminary stage and the position/annotation mapping files we created in pipeline1. The output will be tables and heatmaps showing the probability of positive selection (P(dS<dN)) in areas of the sequence where at least one participant had a Tajima's D value greater than 1.5 (first example heatmap below). I also created a heatmap showing the probability of positive selection throughout all of *env* for every participant (second example heatmap below). 
+
+These heatmaps were used to show that significant positive selection is occurring throughout *env* and that many of these regions with positive selection also have subpopulations forming. 
+
 <p align="center">
   <img width="794" alt="Screenshot 2025-02-21 at 2 48 57 PM" src="https://github.com/user-attachments/assets/56a21d3f-c8a1-4bab-9ed3-32e11ebf904c" />
 </p>
@@ -54,6 +57,10 @@ This workflow takes as input the Tajima's D data we obtained in the preliminary 
 </p>
 
 ### Pipeline 3
+Tools/Languages/Dependencies: Python
 
+This workflow takes as input the file dN/dS values throughout *env*, a threshold of participants that should have positive selection occurring, and an outfile destination. The output will be a file showing codon positions where a threshold number of participants or more had significant positive selection occurring. 
+
+These results were utilized in literature review--we were investigating whether these particular *env* positions had previously been annotated as useful for antibody escape, association with coreceptor binding, or any other functional property that would indicate why that position would be under significant positive selection in multiple participants with chronic HIV infection.
 
 
