@@ -63,4 +63,21 @@ This workflow takes as input the file dN/dS values throughout *env*, a threshold
 
 These results were utilized in literature review--we were investigating whether these particular *env* positions had previously been annotated as useful for antibody escape, association with coreceptor binding, or any other functional property that would indicate why that position would be under significant positive selection in multiple participants with chronic HIV infection.
 
+## Acknowledgements
+<img width="176" alt="Screenshot 2025-02-21 at 3 07 25 PM" src="https://github.com/user-attachments/assets/7c5fb3d4-1a80-4376-88d8-89b218975586" />
+
+<img width="122" alt="Screenshot 2025-02-21 at 3 06 51 PM" src="https://github.com/user-attachments/assets/b881dbfe-04b1-4c4f-9298-635ada884c26" />
+
+The Virus Persistence and Dynamics Section at the Vaccine Research Center
+- Eli Boritz
+- Frida Belinky
+- Pierce Radecki
+- Sung Hee Ko
+- Vanessa Guerra Canedo
+- Ayushman Dobhal
+- Kaelo Seatla
+- Prakriti Mudvari
+- Liliana Perez Rodriguez
+- Pavitra Ramdas
+- Marc Theberge
 
