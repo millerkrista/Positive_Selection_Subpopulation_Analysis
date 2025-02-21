@@ -11,3 +11,28 @@ We had some ideas about what might be driving host populations to evolve into th
 1. Positive Selection: Mutations to DNA that alter the protein are maintained in a population, perhaps because they increase fitness in some way. In our case, a fitness increase could refer to improved capability of avoiding host antibodies or improved binding to coreceptors important for infection.
 
 2. Balancing Selection: Multiple haplotypes are maintained in a population, perhaps because they are all adaptive in some way. In our case, one combination of amino acids that make up a haplotype could improve the virus's ability to escape host antibodies while another increases coreceptor binding affinity.
+
+## Biological Question
+We wanted to investigate these subpopulations to see where they were occurring and what could be causing them. 
+
+## Process
+The general steps in image below were performed by others, I started out with sequence alignments for each participant containing just their *env* sequences.
+
+<img width="362" alt="Screenshot 2025-02-21 at 1 25 19 PM" src="https://github.com/user-attachments/assets/1c2c2707-b9e7-4463-98fd-82ec8fa79940" />
+
+### Preliminary
+Used DNASP to calculate the Tajima's D values on a sliding window of 100bp for each participant alignment file. Tajima's D is typically used to measure whether balancing selection is occurring. 
+
+Used HYPHY FUBAR to calculate the dN/dS, or the ratio of nonsynonymous mutation to synonymous mutation rate. This is typically used to infer whether positive selection is occurring at a given site. 
+
+### Pipeline 1
+Tools/Languages/Dependencies: Python, R
+
+This workflow takes as input the positive selection data we got from HYPHY FUBAR and the participant alignments. We translate the alignments to protein and obtain consensus sequences for each participant, align the consensus sequences to the reference HXB2, and output the codon position mappings for each participant alignment compared to reference HXB2, along with relevant gene annotations. 
+
+### Pipeline 2
+
+### Pipeline 3
+
+
+
