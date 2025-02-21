@@ -20,7 +20,9 @@ We wanted to investigate these subpopulations to see where they were occurring a
 ## Process
 The general steps in image below were performed by others, I started out with sequence alignments for each participant containing just their *env* sequences.
 
-<img width="362" alt="Screenshot 2025-02-21 at 1 25 19 PM" src="https://github.com/user-attachments/assets/1c2c2707-b9e7-4463-98fd-82ec8fa79940" />
+<p align="center">
+  <img width="362" alt="Screenshot 2025-02-21 at 1 25 19 PM" src="https://github.com/user-attachments/assets/1c2c2707-b9e7-4463-98fd-82ec8fa79940" />
+</p>
 
 ### Preliminary
 Used DNASP to calculate the Tajima's D values on a sliding window of 100bp for each participant alignment file. Tajima's D is typically used to measure whether balancing selection is occurring. 
@@ -34,7 +36,9 @@ This workflow takes as input the positive selection data we got from HYPHY FUBAR
 
 This workflow also creates plots for each participant showing dN/dS and Tajima's D values across *env* (example image shown below). These plots were intended to indicate areas where positive selection might be driving subpopulation formation.
 
-<img width="653" alt="Screenshot 2025-02-21 at 2 38 47 PM" src="https://github.com/user-attachments/assets/e04d6105-7a29-4d78-93ab-90de979d5d55" />
+<p align="center">
+  <img width="653" alt="Screenshot 2025-02-21 at 2 38 47 PM" src="https://github.com/user-attachments/assets/e04d6105-7a29-4d78-93ab-90de979d5d55" />
+</p>
 
 
 ### Pipeline 2
