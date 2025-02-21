@@ -28,9 +28,17 @@ Used HYPHY FUBAR to calculate the dN/dS, or the ratio of nonsynonymous mutation 
 ### Pipeline 1
 Tools/Languages/Dependencies: Python, R
 
-This workflow takes as input the positive selection data we got from HYPHY FUBAR and the participant alignments. We translate the alignments to protein and obtain consensus sequences for each participant, align the consensus sequences to the reference HXB2, and output the codon position mappings for each participant alignment compared to reference HXB2, along with relevant gene annotations. 
+This workflow takes as input the positive selection data we got from HYPHY FUBAR and the participant alignments. We translate the alignments to protein and obtain consensus sequences for each participant, align the consensus sequences to the reference HXB2, and output files containing codon position mappings for each participant alignment compared to reference HXB2, along with relevant gene annotations for those positions. These files will be utilized later.
+
+This workflow also creates plots for each participant showing dN/dS and Tajima's D values across *env* (example image shown below). These plots were intended to indicate areas where positive selection might be driving subpopulation formation.
+
+<img width="653" alt="Screenshot 2025-02-21 at 2 38 47 PM" src="https://github.com/user-attachments/assets/e04d6105-7a29-4d78-93ab-90de979d5d55" />
+
 
 ### Pipeline 2
+Tools/Languages/Dependencies: Python, R
+
+This workflow takes as input the Tajima's D data we obtained in the preliminary stage and the position/annotation mapping files we created in pipeline1. 
 
 ### Pipeline 3
 
