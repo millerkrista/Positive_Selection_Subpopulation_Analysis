@@ -1,5 +1,7 @@
 # Positive Selection and Subpopulation Analysis of HIV-1 *env* Gene in Participants with Chronic Infection
-This project was done as part of the National Institutes of Health Intramural Program's Graduate Data Science Summer Program. I worked under Frida Belinky, a computational biologist with Eli Boritz's lab at the National Institute of Allergy and Infectious Disease. With Frida's invaluable mentorship, I created a novel workflow for analyzing high-throughput single-genome sequencing data from 40 participants with chronic HIV infection. 
+This project was done as part of the National Institutes of Health Intramural Program's Graduate Data Science Summer Program. I worked under Frida Belinky, a computational biologist with Eli Boritz's lab at the National Institute of Allergy and Infectious Disease. With Frida's invaluable mentorship, I created a novel workflow for analyzing high-throughput single-genome sequencing data from 40 participants with chronic HIV-1 infection. 
+
+There is currently no vaccine for HIV-1, in part due to extreme sequence variation in the *env* gene. This project aims to elucidate potential driving factors behind sequence variation so that we can more effectively work towards a vaccine.
 
 
 ## Background
@@ -46,7 +48,7 @@ This workflow also creates plots for each participant showing dN/dS and Tajima's
 ### Pipeline 2
 Tools/Languages/Dependencies: Python, R
 
-This workflow takes as input the Tajima's D data we obtained in the preliminary stage and the position/annotation mapping files we created in pipeline1. The output will be tables and heatmaps showing the probability of positive selection (P(dS<dN)) in areas of the sequence where at least one participant had a Tajima's D value greater than 1.5 (first example heatmap below). I also created a heatmap showing the probability of positive selection throughout all of *env* for every participant (second example heatmap below). 
+This workflow takes as input the Tajima's D data we obtained in the preliminary stage and the position/annotation mapping files we created in pipeline1. The output will be tables and heatmaps showing the probability of positive selection (P(dS<dN)) in areas of the sequence where at least one participant had a Tajima's D value greater than 1.5 (first example heatmap below is the V3 loop of *env*). I also created a heatmap showing the probability of positive selection throughout all of *env* for every participant (second example heatmap below). 
 
 These heatmaps were used to show that significant positive selection is occurring throughout *env* and that many of these regions with positive selection also have subpopulations forming. 
 
@@ -65,12 +67,17 @@ This workflow takes as input the file dN/dS values throughout *env*, a threshold
 
 These results were utilized in literature review--we were investigating whether these particular *env* positions had previously been annotated as useful for antibody escape, association with coreceptor binding, or any other functional property that would indicate why that position would be under significant positive selection in multiple participants with chronic HIV infection.
 
+### WEBPSSM_521.522_haplotypes
+Two participants, 521 and 522 had dual-tropic viral populations, meaning that their viral populations were predicted to bind both coreceptors CCR5 and CXCR4. We investigated the relationship between V3 haplotypes and the coreceptor binding score, x4.pct, output from WEBPSSM. This score indicates how similar the score of an input sequence is to scores of sequences known to utilize CXCR4. The script in this directory performs a Kruskal-Wallis test on the x4.pct values based on haplotype group and creates a plot showing the scores for each haplotype group (example shown below).
+
+<p align="center">
+  <img width="438" alt="Screenshot 2025-02-21 at 3 27 49 PM" src="https://github.com/user-attachments/assets/c567762d-82a2-49d0-b39e-7c6ef328e0af" />
+</p>
 
 ## Conclusions
 More investigation required than what could be done in a three month summer project. It seemed that some subpopulations found in some participants were associated with coreceptor usage (CCR5 vs CXCR4), which was investigated using WEBPSSM and phylogenetic tree analysis. Other positions seemed to be associated with antibody escape. 
 
 Research is ongoing at the Vaccine Research Center.
-
 
 ## Acknowledgements
 <img width="176" alt="Screenshot 2025-02-21 at 3 07 25 PM" src="https://github.com/user-attachments/assets/7c5fb3d4-1a80-4376-88d8-89b218975586" />
