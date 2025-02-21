@@ -24,7 +24,7 @@ The general steps in image below were performed by others, I started out with se
   <img width="362" alt="Screenshot 2025-02-21 at 1 25 19 PM" src="https://github.com/user-attachments/assets/1c2c2707-b9e7-4463-98fd-82ec8fa79940" />
 </p>
 
-### Preliminary
+### Preliminary Steps
 Used DNASP to calculate the Tajima's D values on a sliding window of 100bp for each participant alignment file. Tajima's D is typically used to measure whether balancing selection is occurring. 
 
 Used HYPHY FUBAR to calculate the dN/dS, or the ratio of nonsynonymous mutation to synonymous mutation rate. This is typically used to infer whether positive selection is occurring at a given site. 
@@ -44,7 +44,14 @@ This workflow also creates plots for each participant showing dN/dS and Tajima's
 ### Pipeline 2
 Tools/Languages/Dependencies: Python, R
 
-This workflow takes as input the Tajima's D data we obtained in the preliminary stage and the position/annotation mapping files we created in pipeline1. 
+This workflow takes as input the Tajima's D data we obtained in the preliminary stage and the position/annotation mapping files we created in pipeline1. The output will be tables and heatmaps showing the probability of positive selection (P(dS<dN)) in areas of the sequence where at least one participant had a Tajima's D value greater than 1.5 (first example heatmap below). I also created a heatmap showing the probability of positive selection throughout all of *env* for every participant (second example heatmap below). 
+<p align="center">
+  <img width="794" alt="Screenshot 2025-02-21 at 2 48 57 PM" src="https://github.com/user-attachments/assets/56a21d3f-c8a1-4bab-9ed3-32e11ebf904c" />
+</p>
+
+<p align="center">
+  <img width="153" alt="Screenshot 2025-02-21 at 2 51 15 PM" src="https://github.com/user-attachments/assets/252b4fb9-c859-4d2b-b153-b68dde19c834" />
+</p>
 
 ### Pipeline 3
 
